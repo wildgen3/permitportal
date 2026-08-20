@@ -39,7 +39,7 @@ jobs:
       # scanned by the push-to-main run after merge.
       - name: Scan (skipped for Dependabot — see comment above)
         if: github.actor == 'dependabot[bot]'
-        run: echo "Skipped: Dependabot has no access to the denylist secret by design."
+        run: echo 'Skipped - Dependabot has no access to the denylist secret by design.'
 
       - name: Scan
         if: github.actor != 'dependabot[bot]'
