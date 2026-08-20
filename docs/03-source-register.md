@@ -14,7 +14,7 @@ and the places where **published sources are themselves wrong**.
 > **Status: scaffolded.** The entries below are the sources actually relied on by the
 > current content. The full register is reconciled against the adversarial research pass
 > that produced this architecture, and entries are added as content cites them. An
-> uncited normative claim fails the build, so this register grows with the documents
+> uncited external statistic fails the build, so this register grows with the documents
 > rather than ahead of them.
 
 ## Primary sources

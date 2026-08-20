@@ -72,7 +72,8 @@ flowchart TB
 
 The vertical split is the architecture. Everything in the **assistance plane** may call
 a model. Nothing in the **decision plane** may — `packages/rules/engine` declares zero
-model-client dependencies and CI asserts it against the import graph (ADR-0001).
+model-client dependencies, and `scripts/check-engine-purity.py` fails the build on any
+model-client import or manifest dependency there (ADR-0001).
 
 Note the direction of the arrows between the planes. The classifier hands candidates to
 the UI, not to the resolver. The resolver receives only a **confirmed** code of record.

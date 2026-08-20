@@ -25,8 +25,8 @@ Three consequences follow, and they shape everything in this repository:
 2. **Missing input is UNKNOWN, never false.** A rule that cannot be evaluated returns INDETERMINATE
    and a list of what to ask next. In a compliance product, a false negative is the harm.
 3. **The model proposes; the engine decides.** Classification produces a *ranked candidate set for
-   human confirmation*. An unconfirmed code cannot reach a determination — enforced by a database
-   constraint, not by review.
+   human confirmation*. An unconfirmed code cannot reach a determination — to be enforced by a
+   database constraint, specified in the model today and landing with the first migration.
 
 ## For reviewers — the ten-minute path
 
@@ -76,8 +76,9 @@ The statistics gate is narrow by design and says so. See [`docs/clean-room.md`](
 
 ## Contributing
 
-Single maintainer, but the process is real: one decision per ADR, one ADR per pull request, and six CI
-gates that block merges. See [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`AGENTS.md`](AGENTS.md) — the
+Single maintainer, but the process is real: one decision per ADR, one ADR per pull request, and CI
+gates that block merges — and the repository is explicit about which of its rules are enforced today
+versus specified for when the code exists. See [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`AGENTS.md`](AGENTS.md) — the
 latter is the constraint file for both humans and AI agents, and it is worth reading as an artifact in
 its own right.
 

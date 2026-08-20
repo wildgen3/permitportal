@@ -38,8 +38,9 @@ nothing measurable.
 
 ### Consequences
 
-- Good: the confirmation-state `CHECK` constraint from ADR-0005 is expressible and
-  enforced by the database.
+- Good: the confirmation-state `CHECK` constraint from ADR-0005 is expressible in the
+  database, rather than living in application code. It is specified now and enforced from
+  the first migration.
 - Good: bitemporal queries are ordinary SQL.
 - Bad: cycle detection and topological sort are ours to implement — which is required
   regardless, since the credential vocabulary specifies neither.

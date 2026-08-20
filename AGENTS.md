@@ -69,8 +69,10 @@ Locations appear only under `--local`, where the tree is not yet public.
 The deterministic rules engine is the system of record for every determination. Models generate
 candidates and explanations. That boundary is architectural, not a matter of care:
 
-- `packages/rules/engine` declares **zero dependencies on any model client**, and CI asserts it
-  against the import graph. If the AI layer ever becomes load-bearing, the build breaks.
+- `packages/rules/engine` declares **zero dependencies on any model client**, and
+  `scripts/check-engine-purity.py` asserts it in CI over both source imports and dependency
+  manifests. If the AI layer ever becomes load-bearing, the build breaks. The evaluator is not
+  written yet, so the gate is currently **armed rather than satisfied** — it says so when it runs.
 - A database `CHECK` constraint prevents a `Determination` from referencing a
   `ClassificationAssignment` whose `confirmation_state` is `unconfirmed`. An unconfirmed code cannot
   reach a compliance determination even if application code tries.
@@ -213,6 +215,7 @@ These **fail** the build. They do not warn.
 | `contracts` | LinkML regenerates identically; TypeScript typechecks; OpenAPI lints |
 | `rules` | Every ruleset validates; no DAG cycles; every credential declared; every predicate registered at the correct scope; every entry cited and effective-dated; linter L-01…L-05 |
 | `clean-room` | Denylist scan over the full tree |
+| `engine-purity` | Nothing in the decision plane imports or declares a model client |
 | `status` | Every directory has a README with a valid status matching the root table |
 | `eval` | Classification recall and obligation-set correctness against committed baselines |
 
@@ -258,6 +261,17 @@ This section is the point of the file.
   in a repository whose entire argument is "controls, not promises", an unimplemented
   control is the most damaging possible defect. Grep for every claim of enforcement and
   verify each one resolves to code.**
+- **A second claimed gate did not exist — the one behind the central decision.** Five
+  places (this file, ADR-0001, the AI-layer spec, the architecture doc, and the eval gate
+  table) stated that CI asserts the rules engine has no model-client dependency. Nothing
+  did. This is the enforcement mechanism for ADR-0001, which is the decision every other
+  decision here derives from, so it was the single most load-bearing unimplemented claim
+  in the repository. Now `scripts/check-engine-purity.py`, checking both source imports
+  and dependency manifests across `packages/rules` and `services/resolver`, verified by
+  planting both. **Rule: after writing a claim of enforcement, grep for it and follow it
+  to executable code. Two of these were found in one review; assume there are more until
+  each has been traced.**
+
 - **The repository advertised the taxonomy of what it was hiding.** A setup script's
   template listed the categories of protected term, and the failure log named the *kind*
   of thing that had leaked. Individually harmless; together they convert "nothing to see

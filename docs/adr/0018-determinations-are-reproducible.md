@@ -39,6 +39,10 @@ stored rather than regenerated.
 - Good: an engine change that alters historical outcomes is detectable rather than
   silent.
 - Bad: storage grows with determinations, and rule versions can never be deleted.
-- Enforced by: a property test asserting that identical inputs, rule version, and
-  `as_of_law` produce a **byte-identical** evidence tree. This is also what forbids any
-  sampled model output inside the determination path (ADR-0001).
+- Enforced today by: the canonical model, which makes `rule_version_id`,
+  `engine_version`, `as_of_law` and `input_snapshot_hash` required on `Determination`,
+  and by `scripts/check-engine-purity.py`, which keeps sampled model output out of the
+  decision plane (ADR-0001).
+- **Will be enforced by** a property test asserting that identical inputs, rule version
+  and `as_of_law` produce a **byte-identical** evidence tree. That test needs an
+  evaluator, which does not exist yet.

@@ -41,9 +41,13 @@ that go stale relative to the DSL. D2 renders in neither target.
 - Good: a diagram is always in sync with its source, because it *is* its source.
 - Bad: **Mermaid has no C4 model.** C4 discipline is therefore convention, not tooling:
   one diagram per level, a fixed legend, and no diagram exceeding 12 nodes.
-- Bad: the parse-check job needs a headless browser and is the most flake-prone job in
-  CI. It is added deliberately after the rest of the pipeline is stable.
-- Enforced by: the `docs` gate extracts fenced Mermaid blocks and parses them.
+- Bad: a *full* parse needs a headless browser and would be the most flake-prone job in
+  CI, so it is deliberately not run.
+- Enforced by: the `docs` gate extracts every fenced Mermaid block and checks the two
+  things that actually break in practice — an unrecognised diagram type, and unbalanced
+  brackets in node labels. This is a structural check, not a parse, and claiming
+  otherwise would be the same defect this repository has already logged twice. A full
+  render check can be added later if structural checking proves insufficient.
 
 Use `flowchart` for context and container levels, `sequenceDiagram` for intake through
 determination, `stateDiagram-v2` for credential lifecycle, `erDiagram` for the domain

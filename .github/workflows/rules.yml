@@ -2,7 +2,7 @@ name: rules
 
 on:
   pull_request:
-    paths: ['spec/**', 'packages/rules/**', 'scripts/check-rules.py']
+    paths: ['spec/**', 'packages/**', 'services/resolver/**', 'scripts/check-rules.py', 'scripts/check-engine-purity.py']
   push:
     branches: [main]
 
@@ -29,3 +29,8 @@ jobs:
         # graph, every predicate registered at the declared scope, every entry cited and
         # effective-dated, and no negation over an illustrative list.
         run: python3 scripts/check-rules.py
+
+      - name: Decision-plane purity
+        # ADR-0001 is only architecture if it is enforced. Asserts that nothing in
+        # packages/rules or services/resolver imports or depends on a model client.
+        run: python3 scripts/check-engine-purity.py

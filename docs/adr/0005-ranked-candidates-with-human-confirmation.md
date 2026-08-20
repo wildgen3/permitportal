@@ -41,8 +41,11 @@ Never let an unconfirmed code flow into a compliance determination.
 - Good: the applicant owns the classification, and the appeal record shows what they
   were offered.
 - Bad: an extra interaction on every intake.
-- Enforced by: a database `CHECK` — a `Determination` may only reference a
-  `ClassificationAssignment` whose `confirmation_state` is not `unconfirmed`.
+- **Will be enforced by** a database `CHECK` — a `Determination` may only reference a
+  `ClassificationAssignment` whose `confirmation_state` is not `unconfirmed`. The
+  constraint is specified on the slot in `spec/model/core.yaml` and appears in the
+  generated DDL as a comment; it becomes an executable constraint with the first
+  migration. **It is not enforced today**, because there is no database today.
 
 `alternatives_shown[]` is persisted, because an appeal needs to know what the applicant
 was offered, not only what they picked. Per-sector policy (`top_k`, margin, mandatory

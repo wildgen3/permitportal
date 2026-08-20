@@ -35,8 +35,11 @@ asserted?
 
 Chosen: **option 3**, with options 1 and 2 retained as supporting layers.
 
-1. **Citation lint.** Every normative claim in `docs/` carries a source reference; every
-   rule requires a `source_url`. Uncited normative claims fail the build.
+1. **Citation lint.** Every rule requires a `source_url`, and every external statistic in
+   `docs/` requires a `[SRC-nn]` that resolves to the source register — both fail the
+   build. The statistics gate is narrow on purpose: "normative claim" is not detectable by
+   machine, so the gate covers the class where overclaiming does damage, and the
+   documentation says so rather than implying more.
 2. **A denylist scanner** over the full tree on every pull request and weekly. The term
    list lives in a repository **secret**, never in a file — a plaintext denylist in a
    public repo discloses exactly what it exists to protect. Findings never print the

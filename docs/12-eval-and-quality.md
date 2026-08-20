@@ -89,9 +89,11 @@ These fail the build:
 | 5 | Schema drift: regenerated artifacts identical to committed |
 | 6 | Determinism: identical inputs, rule version, and `as_of_law` produce a **byte-identical** evidence tree |
 | 7 | Cost per 1,000 at or below the committed ceiling times 1.25 |
-| 8 | `packages/rules/engine` import graph contains no model client |
+| 8 | The decision plane imports and declares no model client (`check-engine-purity.py`) |
 
-Gates 4, 5, and 8 run today. Gates 1, 2, 3, 6, and 7 arrive with the vertical slice.
+Gates 4, 5, and 8 run today — gate 8 is armed over an empty decision plane and becomes
+meaningful with the first line of engine code, which it says when it runs. Gates 1, 2, 3,
+6, and 7 arrive with the vertical slice.
 `eval/baselines/` currently holds honest placeholders, clearly marked as such — a
 baseline file containing invented numbers would be worse than an empty one.
 

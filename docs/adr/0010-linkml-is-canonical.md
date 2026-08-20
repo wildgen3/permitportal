@@ -52,5 +52,6 @@ JSON Schema, so there is still exactly one source of truth.
 - Enforced by: `./do spec` regenerates, normalises, and CI runs
   `git diff --exit-code spec/generated`.
 
-Generated DDL is the **target**, not a migration tool. Migrations are hand-authored and
-numbered; CI asserts the migrated schema equals the generated target.
+Generated DDL is the **target**, not a migration tool. Migrations will be hand-authored
+and numbered, and CI **will** assert that the migrated schema equals the generated
+target. There are no migrations yet, so that assertion does not run today.

@@ -85,9 +85,10 @@ chains never auto-compose, and a translation that needed one is flagged for revi
 `ClassificationAssignment` carries `confirmation_state` and `is_code_of_record`.
 
 > **The constraint that makes ADR-0005 real:** a `Determination` may only reference a
-> `ClassificationAssignment` whose `confirmation_state` is not `unconfirmed`. This is a
-> database `CHECK`, not an application invariant. Code that tries to bypass it fails at
-> the storage layer.
+> `ClassificationAssignment` whose `confirmation_state` is not `unconfirmed`. This is to
+> be a database `CHECK`, not an application invariant, so that code trying to bypass it
+> fails at the storage layer. It is **specified today and not yet enforced** — there is no
+> database yet. It lands with the first migration.
 
 ## Roll-up as data
 

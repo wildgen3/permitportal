@@ -47,9 +47,11 @@ unreproducible determination cannot be appealed.
 - Good: every determination is replayable and citable.
 - Good: model quality changes cannot silently change legal outcomes.
 - Bad: two systems to build and keep in contract with each other.
-- Enforced by: `packages/rules/engine` declares **zero dependencies on any model
-  client**, asserted in CI against the import graph. If the AI layer ever becomes
-  load-bearing, the build breaks. A database `CHECK` additionally prevents an
-  unconfirmed classification from reaching a determination.
+- Enforced by: `scripts/check-engine-purity.py`, which fails the build if anything in
+  `packages/rules` or `services/resolver` imports or declares a dependency on a model
+  client. If the AI layer ever becomes load-bearing, the build breaks. The evaluator is
+  not written yet, so the gate is armed rather than satisfied, and it reports that
+  distinction rather than printing a bare pass. A database `CHECK` additionally prevents
+  an unconfirmed classification from reaching a determination.
 
 See ADR-0005, ADR-0009, and `docs/11-ai-layer.md`.

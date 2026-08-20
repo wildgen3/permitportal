@@ -55,8 +55,8 @@ provenance on every surfaced obligation, and an independent completeness check.*
 
 | Rule | Mechanism |
 | --- | --- |
-| The engine never depends on a model | `packages/rules/engine` declares zero model-client dependencies; CI asserts it against the import graph |
-| Unconfirmed codes never reach determinations | Database `CHECK` constraint on `Determination` |
+| The engine never depends on a model | `scripts/check-engine-purity.py` fails the build on any model-client import or manifest dependency in the decision plane |
+| Unconfirmed codes never reach determinations | Database `CHECK` on `Determination` — specified, lands with the first migration |
 | Restricted attributes never leave | `llm_egress_allowed: false` in the registry; a change to that field is a security change requiring an ADR |
 | Explanations cannot invent citations | Faithfulness gate: every citation in generated text must be present in the evidence tree. 100% [internal], not a metric — a gate |
 

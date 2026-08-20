@@ -139,6 +139,47 @@ for (const file of files) {
   }
 }
 
+// --- 5: referenced tooling must exist ---------------------------------------
+// Cheap guard against the failure this repository has already hit twice: prose that
+// names an enforcement mechanism which does not resolve to anything executable.
+for (const file of files) {
+  const rel = relative(REPO, file);
+  if (SKIP_FILES.has(rel)) continue;
+  const text = readFileSync(file, "utf8");
+  for (const m of text.matchAll(/scripts\/[a-z0-9-]+\.(?:py|mjs|sh)/g)) {
+    if (!existsSync(join(REPO, m[0]))) {
+      errors.push(`${rel}: references ${m[0]}, which does not exist`);
+    }
+  }
+}
+
+// --- 6: Mermaid blocks are structurally sane --------------------------------
+// Not a full parse -- that needs a headless browser and is the flakiest job available.
+// This checks what actually breaks in practice: an unrecognised diagram type, and
+// unbalanced brackets in node labels. ADR-0016 describes exactly this and no more.
+const MERMAID_TYPES = [
+  "flowchart", "graph", "sequenceDiagram", "stateDiagram", "stateDiagram-v2",
+  "erDiagram", "classDiagram", "journey", "gantt", "pie", "mindmap", "timeline",
+];
+for (const file of files) {
+  const rel = relative(REPO, file);
+  if (SKIP_FILES.has(rel)) continue;
+  const text = readFileSync(file, "utf8");
+  const blocks = [...text.matchAll(/```mermaid\r?\n([\s\S]*?)```/g)];
+  for (const [, block] of blocks) {
+    const first = block.split(/\r?\n/).map((l) => l.trim()).filter(Boolean)[0] || "";
+    const type = first.split(/[\s;]/)[0];
+    if (!MERMAID_TYPES.includes(type)) {
+      errors.push(`${rel}: mermaid block starts with '${type}', which is not a known diagram type`);
+    }
+    for (const [open, close] of [["[", "]"], ["(", ")"], ["{", "}"]]) {
+      const a = (block.match(new RegExp("\\" + open, "g")) || []).length;
+      const b = (block.match(new RegExp("\\" + close, "g")) || []).length;
+      if (a !== b) errors.push(`${rel}: mermaid block has unbalanced '${open}${close}' (${a} vs ${b})`);
+    }
+  }
+}
+
 if (errors.length) {
   console.error("docs: FAILED\n");
   for (const e of errors) console.error(`  - ${e}`);

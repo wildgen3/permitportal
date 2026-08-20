@@ -43,5 +43,7 @@ FALSE if any child is FALSE; otherwise unknown wins.
 - Good: an unevaluable rule returns INDETERMINATE with `missing_attributes[]`, which
   drives the next question. It never returns "does not apply".
 - Bad: every consumer must handle three outcomes, not two.
-- Enforced by: the evaluator uses partial activation (ADR-0007); `TruthValue` in the
-  canonical model has no two-valued representation to fall back to.
+- Enforced today by: `TruthValue` in the canonical model, which has no two-valued
+  representation to fall back to, so the four outcomes are the only expressible ones.
+- **Will be enforced by** the evaluator's use of partial activation (ADR-0007), once the
+  evaluator exists.

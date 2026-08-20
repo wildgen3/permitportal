@@ -80,6 +80,9 @@ cmd_check() {
   echo "== rules =="
   python3 scripts/check-rules.py || failed=1
 
+  echo "== engine purity =="
+  python3 scripts/check-engine-purity.py || failed=1
+
   if [[ $failed -ne 0 ]]; then
     echo
     echo "check: FAILED"
