@@ -107,7 +107,7 @@ it requires a superseding ADR.
 The scanner should run before a commit exists, not after it is public:
 
 ```bash
-scripts/install-hooks.sh          # creates ~/.config/permitgraph/denylist.txt, installs the hook
+scripts/install-hooks.sh          # creates ~/.config/permitportal/denylist.txt, installs the hook
 ```
 
 The local denylist is untracked, mode 600, and excluded from the vault sync.

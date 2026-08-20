@@ -9,10 +9,10 @@
       "ceterms": "https://purl.org/ctdl/terms/",
       "dcterms": "http://purl.org/dc/terms/",
       "linkml": "https://w3id.org/linkml/",
-      "pg": "https://wildgen3.github.io/permitgraph/spec/model/core/",
+      "pg": "https://wildgen3.github.io/permitportal/spec/model/core/",
       "skos": "http://www.w3.org/2004/02/skos/core#",
       "xkos": "http://rdf-vocabulary.ddialliance.org/xkos#",
-      "@vocab": "https://wildgen3.github.io/permitgraph/spec/model/core/",
+      "@vocab": "https://wildgen3.github.io/permitportal/spec/model/core/",
       "description": {
          "@id": "description"
       },

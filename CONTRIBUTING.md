@@ -65,7 +65,7 @@ Read the first section of [`AGENTS.md`](AGENTS.md) before your first contributio
 must be derivable from public, citable sources. The pull request template has a checklist; the scanner
 runs regardless of what you check.
 
-To run the scanner locally, create `~/.config/permitgraph/denylist.txt` (untracked, never committed)
+To run the scanner locally, create `~/.config/permitportal/denylist.txt` (untracked, never committed)
 and install the pre-commit hook:
 
 ```bash

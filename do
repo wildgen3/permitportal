@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PermitGraph task runner.
+# PermitPortal task runner.
 #
 # A shell script rather than a Makefile: `make` is not installed on the development
 # machine and installing it requires root, which the rest of this toolchain does not.
@@ -64,7 +64,7 @@ cmd_check() {
   node scripts/check-status-table.mjs || failed=1
 
   echo "== clean-room =="
-  CLEAN_ROOM_DENYLIST_FILE="${CLEAN_ROOM_DENYLIST_FILE:-$HOME/.config/permitgraph/denylist.txt}" \
+  CLEAN_ROOM_DENYLIST_FILE="${CLEAN_ROOM_DENYLIST_FILE:-$HOME/.config/permitportal/denylist.txt}" \
     python3 scripts/clean-room-check.py || failed=1
 
   echo "== spec drift =="

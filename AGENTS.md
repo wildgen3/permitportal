@@ -1,4 +1,4 @@
-# AGENTS.md — PermitGraph
+# AGENTS.md — PermitPortal
 
 Conventions and hard constraints for humans and AI agents working in this repo. Read this before
 writing anything. Every rule here exists because something specific went wrong — either in the

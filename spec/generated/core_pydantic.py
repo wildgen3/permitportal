@@ -77,10 +77,10 @@ linkml_meta = LinkMLMeta({'default_prefix': 'pg',
                     'reused for different concepts across revisions. Second, an '
                     'unconfirmed classification may never reach a determination -- '
                     'enforced at the database layer, not by application code.',
-     'id': 'https://wildgen3.github.io/permitgraph/spec/model/core',
+     'id': 'https://wildgen3.github.io/permitportal/spec/model/core',
      'imports': ['linkml:types'],
      'license': 'https://creativecommons.org/licenses/by/4.0/',
-     'name': 'permitgraph-core',
+     'name': 'permitportal-core',
      'prefixes': {'ceterms': {'prefix_prefix': 'ceterms',
                               'prefix_reference': 'https://purl.org/ctdl/terms/'},
                   'dcterms': {'prefix_prefix': 'dcterms',
@@ -88,13 +88,13 @@ linkml_meta = LinkMLMeta({'default_prefix': 'pg',
                   'linkml': {'prefix_prefix': 'linkml',
                              'prefix_reference': 'https://w3id.org/linkml/'},
                   'pg': {'prefix_prefix': 'pg',
-                         'prefix_reference': 'https://wildgen3.github.io/permitgraph/spec/model/core/'},
+                         'prefix_reference': 'https://wildgen3.github.io/permitportal/spec/model/core/'},
                   'skos': {'prefix_prefix': 'skos',
                            'prefix_reference': 'http://www.w3.org/2004/02/skos/core#'},
                   'xkos': {'prefix_prefix': 'xkos',
                            'prefix_reference': 'http://rdf-vocabulary.ddialliance.org/xkos#'}},
      'source_file': 'spec/model/core.yaml',
-     'title': 'PermitGraph canonical model'} )
+     'title': 'PermitPortal canonical model'} )
 
 class ScopeUnit(str, Enum):
     """
@@ -249,7 +249,7 @@ class BusinessEntity(ConfiguredBaseModel):
     """
     A legal entity. The company scope.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -292,7 +292,7 @@ class Establishment(ConfiguredBaseModel):
     """
     A single physical site operated by a business entity.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -338,7 +338,7 @@ class Process(ConfiguredBaseModel):
     """
     An activity unit beneath an establishment. Exists because chemical-process regimes attach codes and quantity thresholds below the site level, and forbid inheriting the site's primary code as a default.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -379,7 +379,7 @@ class Activity(ConfiguredBaseModel):
     """
     A line of business carried on at an establishment.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -420,7 +420,7 @@ class ProductOffering(ConfiguredBaseModel):
     """
     A product or service offered. A separate demand-based axis; not derivable from the supply-based industry classification.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -458,7 +458,7 @@ class ChemicalHolding(ConfiguredBaseModel):
     """
     A chemical held at a process. Data class is restricted.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -498,7 +498,7 @@ class ChemicalHolding(ConfiguredBaseModel):
 
 
 class EquipmentItem(ConfiguredBaseModel):
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -537,7 +537,7 @@ class AttributeDefinition(ConfiguredBaseModel):
     """
     The registry entry for a fact the system may collect or a rule may test. A rule referencing an unregistered attribute, or one at a scope that disagrees with this entry, fails CI. This is what makes scope-confusion bugs unwriteable.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     uri: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['AttributeDefinition']} })
     label: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['AttributeDefinition',
@@ -559,7 +559,7 @@ class Fact(ConfiguredBaseModel):
     """
     An open-world fact carrying the long tail of attributes that do not warrant a typed column.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -603,7 +603,7 @@ class Scheme(ConfiguredBaseModel):
     """
     A classification scheme.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -646,7 +646,7 @@ class SchemeVersion(ConfiguredBaseModel):
     """
     A dated edition of a scheme. Vintage is part of concept identity.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -685,7 +685,7 @@ class Concept(ConfiguredBaseModel):
     """
     A single code within a scheme version. Identity is the triple (scheme, vintage, code) -- never a bare code.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core',
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core',
          'unique_keys': {'natural_key': {'description': 'The real identity of a '
                                                         'concept.',
                                          'unique_key_name': 'natural_key',
@@ -733,7 +733,7 @@ class Correspondence(ConfiguredBaseModel):
     A published crosswalk between two scheme versions, as an addressable and versionable object rather than a lookup table.
     """
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'exact_mappings': ['xkos:Correspondence'],
-         'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+         'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -774,7 +774,7 @@ class ConceptMapping(ConfiguredBaseModel):
     """
     One row of a correspondence.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -816,7 +816,7 @@ class ClassificationAssignment(ConfiguredBaseModel):
     """
     A candidate or confirmed code for a subject. Candidates are presented ranked for human confirmation; only a confirmed assignment may be the code of record.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -862,7 +862,7 @@ class CodeTranslation(ConfiguredBaseModel):
     """
     The result of walking one or more correspondences. The hop path is retained so a translation can be audited rather than trusted.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -904,7 +904,7 @@ class RollupRule(ConfiguredBaseModel):
     """
     How a code at a wider scope derives from a narrower one, as data. Encoding this as rows is what lets one regime forbid the roll-up that another requires.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -942,7 +942,7 @@ class RollupRule(ConfiguredBaseModel):
 
 
 class Jurisdiction(ConfiguredBaseModel):
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -989,7 +989,7 @@ class JurisdictionProfile(ConfiguredBaseModel):
     A jurisdiction expressed as an inclusion set with exceptions, because \"everywhere except one state\" is a common real pattern that a flat column cannot represent.
     """
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'exact_mappings': ['ceterms:JurisdictionProfile'],
-         'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+         'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -1028,7 +1028,7 @@ class Authority(ConfiguredBaseModel):
     """
     An agency that issues credentials or administers obligations.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -1070,7 +1070,7 @@ class LegalSource(ConfiguredBaseModel):
     """
     A retrieved, hashed, point-in-time snapshot of authoritative text. Every obligation traces to one of these.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -1112,7 +1112,7 @@ class Regime(ConfiguredBaseModel):
     """
     A regulatory programme that generates obligations.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -1152,7 +1152,7 @@ class Regime(ConfiguredBaseModel):
 
 
 class Obligation(ConfiguredBaseModel):
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -1195,7 +1195,7 @@ class Determination(ConfiguredBaseModel):
     """
     A reproducible answer. Pinning the rule version, the law date, and a hash of the inputs is what lets the system answer \"why did it say that in March\".
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -1242,7 +1242,7 @@ class ProvenanceRecord(ConfiguredBaseModel):
     """
     What produced a surfaced item. No obligation is displayed without one.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -1284,7 +1284,7 @@ class Credential(ConfiguredBaseModel):
     """
     A licence, certification, registration, or permit.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -1334,7 +1334,7 @@ class Requirement(ConfiguredBaseModel):
     A reified condition between a credential and what it demands. A table rather than a foreign key, because the edge carries jurisdiction, residency, experience, cost, and dates. Recursive: AND groups contain OR alternative sets contain further groups, which is what real licensing paths need.
     """
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'exact_mappings': ['ceterms:ConditionProfile'],
-         'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+         'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',
@@ -1383,7 +1383,7 @@ class CredentialDependencyEdge(ConfiguredBaseModel):
     """
     A derived, typed edge used for topological ordering. Cycles are a transcription error in the source law and fail CI; they are not a runtime condition to handle.
     """
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitgraph/spec/model/core'})
+    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta({'from_schema': 'https://wildgen3.github.io/permitportal/spec/model/core'})
 
     id: str = Field(default=..., json_schema_extra = { "linkml_meta": {'domain_of': ['BusinessEntity',
                        'Establishment',

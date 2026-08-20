@@ -27,7 +27,7 @@ repository's):
 
 ```hcl
 project_id      = "your-gcp-project-id"
-github_repo     = "your-org/permitgraph"
+github_repo     = "your-org/permitportal"
 billing_account = "000000-000000-000000"
 ```
 

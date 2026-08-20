@@ -1,4 +1,4 @@
-# PermitGraph
+# PermitPortal
 
 **A reference architecture for state business one-stop portals.**
 
@@ -7,7 +7,7 @@ nothing more. They fail the same way: each agency owns its own form, and nobody 
 order between them. A business owner who wants to open a shop can find every individual requirement
 and still not know what to do first.
 
-PermitGraph specifies a system that resolves a plain-language business description into an **ordered
+PermitPortal specifies a system that resolves a plain-language business description into an **ordered
 graph of the credentials that business must obtain** — with a citation on every obligation, a
 deterministic engine deciding every determination, and a language model nowhere near the decision.
 

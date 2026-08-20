@@ -16,7 +16,7 @@ one diagram per level, a fixed legend, no diagram over twelve nodes.
 flowchart LR
   owner([Business owner])
   staff([Agency staff])
-  PG[PermitGraph]
+  PG[PermitPortal]
   law[(Federal regulatory text<br/>eCFR / GPO bulk XML)]
   state[(State code and<br/>licence catalogues)]
   muni[(Municipal code)]
@@ -33,7 +33,7 @@ flowchart LR
   cred --> PG
 ```
 
-PermitGraph reads authoritative public sources and writes nothing back to them. It files
+PermitPortal reads authoritative public sources and writes nothing back to them. It files
 nothing on anyone's behalf (`01-vision-and-problem.md`, non-goals).
 
 ## Level 2 — containers

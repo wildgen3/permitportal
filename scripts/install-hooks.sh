@@ -3,7 +3,7 @@
 # exists, rather than after it is already public.
 set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-DENYLIST="$HOME/.config/permitgraph/denylist.txt"
+DENYLIST="$HOME/.config/permitportal/denylist.txt"
 
 if [[ ! -f "$DENYLIST" ]]; then
   mkdir -p "$(dirname "$DENYLIST")"
@@ -19,7 +19,7 @@ cat > "$REPO/.git/hooks/pre-commit" <<'HOOK'
 #!/usr/bin/env bash
 set -euo pipefail
 REPO="$(git rev-parse --show-toplevel)"
-export CLEAN_ROOM_DENYLIST_FILE="$HOME/.config/permitgraph/denylist.txt"
+export CLEAN_ROOM_DENYLIST_FILE="$HOME/.config/permitportal/denylist.txt"
 python3 "$REPO/scripts/clean-room-check.py" --local || {
   echo
   echo "pre-commit: clean-room check failed. Commit aborted."

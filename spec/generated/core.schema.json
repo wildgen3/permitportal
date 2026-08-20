@@ -1615,11 +1615,11 @@
             "type": "string"
         }
     },
-    "$id": "https://wildgen3.github.io/permitgraph/spec/model/core",
+    "$id": "https://wildgen3.github.io/permitportal/spec/model/core",
     "$schema": "https://json-schema.org/draft/2019-09/schema",
     "additionalProperties": true,
     "metamodel_version": "1.11.0",
-    "title": "permitgraph-core",
+    "title": "permitportal-core",
     "type": "object",
     "version": null
 }

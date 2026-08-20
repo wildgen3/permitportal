@@ -2,14 +2,14 @@
 
 ## Scope
 
-PermitGraph is a specification and reference implementation. There is no hosted
+PermitPortal is a specification and reference implementation. There is no hosted
 production system, no user accounts, and no personal data. The repository
 contains synthetic fixtures only.
 
 ## Reporting
 
 Report suspected vulnerabilities through GitHub's
-[private security advisory](https://github.com/wildgen3/permitgraph/security/advisories/new)
+[private security advisory](https://github.com/wildgen3/permitportal/security/advisories/new)
 flow rather than a public issue.
 
 ## What counts as a security issue here

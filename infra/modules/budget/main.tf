@@ -35,7 +35,7 @@ variable "thresholds" {
 
 resource "google_billing_budget" "this" {
   billing_account = var.billing_account
-  display_name    = "permitgraph-${var.project_id}"
+  display_name    = "permitportal-${var.project_id}"
 
   budget_filter {
     projects = ["projects/${var.project_id}"]

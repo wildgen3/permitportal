@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Security report
-    url: https://github.com/wildgen3/permitgraph/security/advisories/new
+    url: https://github.com/wildgen3/permitportal/security/advisories/new
     about: Report a vulnerability privately, not as a public issue.

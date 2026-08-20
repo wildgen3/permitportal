@@ -57,7 +57,7 @@ resource "google_project_service" "required" {
 
 # --- Terraform state --------------------------------------------------------
 resource "google_storage_bucket" "tfstate" {
-  name                        = "${var.project_id}-permitgraph-tfstate"
+  name                        = "${var.project_id}-permitportal-tfstate"
   location                    = var.region
   uniform_bucket_level_access = true
   public_access_prevention    = "enforced"
@@ -75,8 +75,8 @@ resource "google_storage_bucket" "tfstate" {
 
 # --- Deploy identity, with NO service account key ---------------------------
 resource "google_service_account" "deployer" {
-  account_id   = "permitgraph-deployer"
-  display_name = "PermitGraph CI deployer"
+  account_id   = "permitportal-deployer"
+  display_name = "PermitPortal CI deployer"
   description  = "Assumed by GitHub Actions via Workload Identity Federation. No keys."
 }
 
@@ -92,8 +92,8 @@ resource "google_project_iam_member" "deployer" {
 }
 
 resource "google_iam_workload_identity_pool" "github" {
-  workload_identity_pool_id = "permitgraph-github"
-  display_name              = "PermitGraph GitHub Actions"
+  workload_identity_pool_id = "permitportal-github"
+  display_name              = "PermitPortal GitHub Actions"
 }
 
 resource "google_iam_workload_identity_pool_provider" "github" {
