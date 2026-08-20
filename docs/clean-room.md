@@ -89,10 +89,27 @@ itself. It is deliberately verbose so that it is obvious in a diff, and it is de
 **not** available for the sensitive list: a contributor cannot wave through a term they
 should not have written.
 
-**The scanner exits 2 when no terms are configured at all.** It refuses to report a pass
-without having checked anything. "Nothing was checked" and "nothing was found" produce
+**The scanner exits 2 whenever the sensitive list is empty**, and whenever
+`CLEAN_ROOM_DENYLIST_FILE` names a file that does not exist. It refuses to report a pass
+without having checked what matters. "Nothing was checked" and "nothing was found" produce
 identical output otherwise, and the first silently reads as the second in exactly the
 situation where that is most dangerous.
+
+Two narrower versions of this were wrong at first, and both are worth stating because they
+are the kind of hole that looks like working software:
+
+- An explicitly-named denylist file that did not exist used to **fall back to the default
+  list** and report a pass. The operator would believe they had scanned against the list
+  they named. Substituting a source silently is the same defect as having no source.
+- A missing sensitive list used to be a **warning**, not a failure, on the theory that the
+  generic list still checked something. But in CI, `CLEAN_ROOM_DENYLIST: ${{ secrets.X }}`
+  expands to an *empty string* when the secret is missing or deleted — so the gate would
+  quietly degrade to generic-terms-only and stay green. The generic list is additive. The
+  sensitive list is the control.
+
+On a fork pull request exit 2 is the expected outcome, because forks receive no secrets.
+That is correct fail-closed behaviour and must not be "fixed" by switching the workflow to
+`pull_request_target`, which would hand the secret to any forked pull request.
 
 ### 3. The pilot jurisdiction was chosen by a rubric, not defaulted
 

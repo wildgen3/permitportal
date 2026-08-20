@@ -17,7 +17,8 @@ Repository tooling. These run in CI and locally, and they work today.
 
 ## On the scanner returning 2
 
-`clean-room-check.py` exits **2** when no terms are configured at all. It refuses to report a pass
-without having checked anything — a scanner that silently succeeds when misconfigured is worse than no
-scanner, because it manufactures false confidence in exactly the situation where confidence is
-unwarranted.
+`clean-room-check.py` exits **2** when the sensitive list is empty, or when
+`CLEAN_ROOM_DENYLIST_FILE` names a file that does not exist. It never falls back to a different list
+than the one it was asked for, and it never treats the generic list as a substitute for the sensitive
+one. A scanner that silently succeeds when misconfigured is worse than no scanner, because it
+manufactures false confidence in exactly the situation where confidence is unwarranted.

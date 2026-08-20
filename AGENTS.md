@@ -274,6 +274,25 @@ This section is the point of the file.
   in a repository whose entire argument is "controls, not promises", an unimplemented
   control is the most damaging possible defect. Grep for every claim of enforcement and
   verify each one resolves to code.**
+- **The corrected scanner blocked its own fix commit, and was right to.** The rename
+  updated `scripts/install-hooks.sh`, but the *already-installed* `.git/hooks/pre-commit`
+  had the old denylist path baked in at install time. Updating a generator does not update
+  what it previously generated. Under the old fail-open behaviour this would have passed
+  silently against the wrong list; under the fix it exited 2 and aborted the commit.
+  **Rule: after renaming anything a script writes into place, re-run the installer.
+  `scripts/install-hooks.sh` is idempotent precisely so this is cheap.**
+
+- **The clean-room scanner had two silent-degradation holes, found by probing it rather
+  than reading it.** Pointing `CLEAN_ROOM_DENYLIST_FILE` at a non-existent path made it
+  fall back to the default list and report *clean* — a pass against a list nobody asked
+  for. And an empty sensitive list was only a warning, which matters because in CI
+  `CLEAN_ROOM_DENYLIST: ${{ secrets.X }}` expands to an empty string when the secret is
+  missing or deleted: the gate would have degraded to generic-terms-only and stayed green
+  forever. Both are now exit 2. **Rule: test a control by feeding it a broken
+  configuration, not by reading the code. Both of these read as correct and neither
+  behaved correctly, and a control that fails open is indistinguishable from a control
+  that works right up until the day it matters.**
+
 - **Three GitHub Action SHAs were written from memory, and all three were wrong.** Setting
   up the Pages workflow, the pins for `configure-pages`, `upload-pages-artifact` and
   `deploy-pages` were confidently wrong in both the SHA *and* the major version — the real
