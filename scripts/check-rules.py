@@ -39,6 +39,16 @@ except ImportError:  # pragma: no cover
 REPO = Path(__file__).resolve().parent.parent
 SPEC = REPO / "spec"
 
+# Predicates whose truth depends on membership in a versioned list. L-01, L-03 and
+# L-06 all turn on list polarity and list completeness, so they must cover every
+# predicate that consults a list -- not only the ones that consult an *industry* code
+# list. They originally covered only the latter, which left `activity_in` and `any_of`
+# entirely unchecked; see the "What failed" log in AGENTS.md.
+LIST_PREDICATES = {"code_in", "code_not_in", "activity_in", "any_of"}
+
+# The subset that keys to an industry classification. L-02 is about industry codes
+# specifically: a rule that decides applicability on nothing but a NAICS code has to
+# quote the text that keys to codes.
 CODE_PREDICATES = {"code_in", "code_not_in"}
 BOOLEAN_NODES = ("all", "any", "none", "not")
 
@@ -131,18 +141,21 @@ def walk(node, rule_name: str, negated: bool, state: dict) -> None:
                 f"registry says `{entry['scope_unit']}`",
             )
 
-    if predicate not in CODE_PREDICATES:
+    if predicate not in LIST_PREDICATES:
         state["non_code_predicates"] += 1
         return
 
-    state["code_predicates"] += 1
+    if predicate in CODE_PREDICATES:
+        state["code_predicates"] += 1
+    else:
+        state["non_code_predicates"] += 1
 
     # --- L-03: vintage and a resolvable, pinned list
     list_ref = node.get("list_ref")
     if not node.get("list_vintage"):
-        err(rule_name, "L-03", f"code predicate on `{attribute}` declares no list_vintage")
+        err(rule_name, "L-03", f"list predicate on `{attribute}` declares no list_vintage")
     if not list_ref:
-        err(rule_name, "L-03", f"code predicate on `{attribute}` declares no list_ref")
+        err(rule_name, "L-03", f"list predicate on `{attribute}` declares no list_ref")
         return
     referenced = lists.get(list_ref)
     if referenced is None:

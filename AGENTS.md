@@ -353,6 +353,24 @@ This section is the point of the file.
   correct content trains its reader to skip it, which is worse than not having the check.
   Tune for zero false positives on a known-good tree before trusting a single finding.**
 
+- **The rules linter's three most important checks covered two of the four predicates
+  that consult a list.** `L-01` (no negation over an open list), `L-03` (pin the list and
+  its vintage) and `L-06` (an incomplete list cannot support a FALSE) all turned on a set
+  named `CODE_PREDICATES`, containing only `code_in` and `code_not_in`. `activity_in` and
+  `any_of` fell through to the "not a code predicate" early return and were checked for
+  nothing at all. The cost was concrete: `spec/rules/us-wa/` carried a `not:` over
+  `any_of` — the *worked example for L-01 in the DSL documentation* — plus two unpinned
+  list vintages and an undeclared dependence on a list marked `is_complete: false`, and
+  the gate reported `rules: clean` on all four. Verified by planting an
+  `illustrative_open` list under that `not:`: the linter as it stood on `main` printed
+  `clean`; the widened one fails with L-01 naming the list. **Rule: when a check keys off
+  a set of names, enumerate what is *not* in the set and ask why. A predicate list is a
+  denylist wearing an allowlist's clothes, and the members nobody added are invisible —
+  the check passes, which reads exactly like the check working.** Found by writing a
+  second implementation of the same semantics: the Go evaluator applies polarity
+  uniformly to every list-consuming predicate, so it disagreed with the linter, and the
+  disagreement was the bug.
+
 - **YAML parsed `TRUE:` and `FALSE:` as booleans.** The `TruthValue` enum declared permissible values
   `TRUE`, `FALSE`, `UNKNOWN_MISSING_INPUT`, `UNKNOWN_NOT_SELF_DETERMINABLE`. YAML 1.1 coerces the
   first two to booleans, so they silently became `True` and `False` in *every* generated artifact —
