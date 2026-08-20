@@ -209,15 +209,28 @@ Two deviations from the monorepo convention I use elsewhere, both deliberate:
 
 These **fail** the build. They do not warn.
 
+Running today:
+
 | Gate | Enforces |
 | --- | --- |
-| `docs` | Markdown lint, dead links, spelling, front-matter schema, ADR index in sync, Mermaid parses |
-| `contracts` | LinkML regenerates identically; TypeScript typechecks; OpenAPI lints |
-| `rules` | Every ruleset validates; no DAG cycles; every credential declared; every predicate registered at the correct scope; every entry cited and effective-dated; linter L-01…L-05 |
-| `clean-room` | Denylist scan over the full tree |
+| `docs` | Front-matter schema, ADR back-references resolve, internal links resolve, every external statistic carries a resolving `[SRC-nn]`, referenced `scripts/` paths exist, Mermaid blocks are structurally sane, ADR index in sync, `terraform fmt` |
+| `contracts` | LinkML regenerates byte-identically and the committed artifacts match |
+| `rules` | Every ruleset validates; no cycles in the credential graph; every credential declared; every predicate registered at the declared scope; every entry cited and effective-dated; linter L-01…L-06 |
 | `engine-purity` | Nothing in the decision plane imports or declares a model client |
+| `clean-room` | Denylist scan over the full tree |
 | `status` | Every directory has a README with a valid status matching the root table |
-| `eval` | Classification recall and obligation-set correctness against committed baselines |
+
+Arriving with the code they check, and **not running today**:
+
+| Gate | Waiting on |
+| --- | --- |
+| TypeScript typecheck, OpenAPI lint | `packages/` code and `spec/api/openapi.yaml` |
+| `eval` | The harness and a real baseline |
+| Determinism property test | The evaluator |
+| Migration-equals-target assertion | The first migration |
+
+The distinction is deliberate. Listing a gate that does not run as though it does is the
+specific defect logged twice below, and it is the one this repository can least afford.
 
 `eval-live` is the only workflow that can spend money, and it runs on `workflow_dispatch` only.
 
