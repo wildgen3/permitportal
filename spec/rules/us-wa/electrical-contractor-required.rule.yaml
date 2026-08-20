@@ -4,12 +4,18 @@
 # rule decides THAT a credential is required; the requirement tree decides what must
 # be obtained first.
 #
-# Note the `not:` here is legal because the exemption list is enumerative_closed and
-# complete. The same construct over an illustrative_open list is linter error L-01.
+# Note the `not:` here is legal because the exemption list is enumerative_closed: the
+# statute enumerates its exemptions exhaustively, so "not on the list" is a supportable
+# conclusion. The same construct over an illustrative_open list is linter error L-01.
+#
+# The copy of that list in this repository is a representative subset, however, so the
+# rule is declared `fixture_only`. Closed-in-law and complete-in-this-repo are different
+# facts (L-06), and only the second of them licenses a production FALSE.
 rule: us-wa.electrical_contractor.required
 version: 1
 scope: establishment
 result_semantics: obligation
+fixture_only: true          # references a list with is_complete: false
 effective:
   law_from: "1980-01-01"
 source_url: https://app.leg.wa.gov/rcw/default.aspx?cite=19.28
@@ -25,6 +31,7 @@ expr:
       scope: establishment
       attribute: establishment.activities
       list_ref: vocab/activity/electrical_work
+      list_vintage: "current"
       list_semantics: enumerative_closed
       cites: [c1]
     - predicate: location_within
@@ -37,6 +44,7 @@ expr:
         scope: establishment
         attribute: establishment.exemption_claims
         list_ref: lists/rcw_19_28_exemptions
+        list_vintage: "current"
         list_semantics: enumerative_closed
         cites: [c1]
 

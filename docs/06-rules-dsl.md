@@ -75,7 +75,7 @@ All of these fail the build. Implemented in `scripts/check-rules.py`.
 | --- | --- |
 | **L-01** | Negation over an `illustrative_open` list. Asserts an exclusion the source text does not support. |
 | **L-02** | A rule whose predicates are *all* code predicates, without a `sole_key_justification` quoting the text that keys to codes. |
-| **L-03** | A code predicate without `list_vintage`, without a `list_ref`, with a `list_ref` that does not resolve, or whose declared semantics disagree with the list's. |
+| **L-03** | A list predicate without `list_vintage`, without a `list_ref`, with a `list_ref` that does not resolve, or whose declared semantics disagree with the list's. |
 | **L-04** | An attribute not in the registry, or a predicate whose declared `scope` disagrees with the registry's `scope_unit`. |
 | **L-05** | A rule without at least one positive and one negative fixture. |
 | **L-06** | A rule referencing a list marked `is_complete: false` without declaring `fixture_only: true`. An incomplete closed list cannot support a production FALSE. |
@@ -145,12 +145,22 @@ to know to look.
     scope: establishment
     attribute: establishment.exemption_claims
     list_ref: lists/rcw_19_28_exemptions
+    list_vintage: "current"
     list_semantics: enumerative_closed
 ```
 
 Legal, because the exemption list is closed: the statute enumerates its exemptions
 exhaustively, so *not being on the list* is a supportable conclusion. The same construct
 over an open list is L-01.
+
+Closed is necessary but not sufficient. The copy of that list here is a representative
+subset (`is_complete: false`), so the rule that contains this node must also declare
+`fixture_only: true` — L-06. Closed-in-law and complete-in-this-repository are different
+facts, and only the second licenses a FALSE a user could rely on.
+
+**L-01, L-03 and L-06 apply to every list predicate**, not only to the industry-code
+ones: `code_in`, `code_not_in`, `activity_in`, `any_of`. They originally covered the
+first two, which left the negation above unchecked by the very rule it illustrates.
 
 ## Vintage translation
 
