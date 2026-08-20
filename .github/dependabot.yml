@@ -9,23 +9,34 @@ updates:
     # Actions are pinned by commit SHA. Dependabot updates the SHA and the version
     # comment together, which is the only sane way to maintain SHA pinning by hand.
 
-  - package-ecosystem: npm
-    directory: /
-    schedule:
-      interval: weekly
-    commit-message:
-      prefix: "chore(deps)"
-
-  - package-ecosystem: pip
-    directory: /services/classifier
-    schedule:
-      interval: weekly
-    commit-message:
-      prefix: "chore(deps)"
-
-  - package-ecosystem: gomod
-    directory: /services/resolver
-    schedule:
-      interval: weekly
-    commit-message:
-      prefix: "chore(deps)"
+  # DISABLED until the manifests exist. services/classifier and
+  # services/resolver currently contain only a README, and there is no root
+  # package.json -- Dependabot cannot find a manifest and errors on every
+  # scheduled run. A permanently red weekly job is noise that trains you to
+  # ignore the one that eventually matters.
+  #
+  # Re-enable each block in the same commit that adds its manifest:
+  #   npm    -> package.json at the repo root
+  #   pip    -> services/classifier/pyproject.toml (or requirements.txt)
+  #   gomod  -> services/resolver/go.mod
+  #
+  # - package-ecosystem: npm
+  #   directory: /
+  #   schedule:
+  #     interval: weekly
+  #   commit-message:
+  #     prefix: "chore(deps)"
+  #
+  # - package-ecosystem: pip
+  #   directory: /services/classifier
+  #   schedule:
+  #     interval: weekly
+  #   commit-message:
+  #     prefix: "chore(deps)"
+  #
+  # - package-ecosystem: gomod
+  #   directory: /services/resolver
+  #   schedule:
+  #     interval: weekly
+  #   commit-message:
+  #     prefix: "chore(deps)"
