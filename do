@@ -53,17 +53,44 @@ resolve_python() {
   die "no interpreter with rdflib found. Install LinkML: uv tool install linkml"
 }
 
+# Generate ONE artifact safely.
+#
+# `cmd > target` truncates the target the instant the shell opens it -- before the
+# generator has produced a byte. When a generator intermittently fails or emits nothing
+# (gen-shacl does, observed empty output on roughly one run in four), that destroys a
+# good committed artifact and the drift gate then reports a diff that is pure noise.
+#
+# So: generate to a temp file, refuse to accept an empty or failed result, and only then
+# move it into place. A known-good artifact is never replaced by an unknown-bad one, and
+# a generator failure is loud instead of silently emptying a file.
+gen() {
+  local target="$1"; shift
+  local tmp rc=0
+  tmp="$(mktemp)"
+  quiet "$@" > "$tmp" || rc=$?
+  if [[ $rc -ne 0 ]]; then
+    rm -f "$tmp"
+    die "generator failed (exit $rc): $* -> $(basename "$target")"
+  fi
+  if [[ ! -s "$tmp" ]]; then
+    rm -f "$tmp"
+    die "generator produced EMPTY output: $* -> $(basename "$target") (existing file left untouched)"
+  fi
+  mv -f "$tmp" "$target"
+  chmod 644 "$target"
+}
+
 cmd_spec() {
   have gen-json-schema
   mkdir -p "$GEN"
   echo "spec: regenerating from $MODEL"
-  quiet gen-json-schema     "$MODEL" > "$GEN/core.schema.json"
-  quiet gen-shacl           "$MODEL" > "$GEN/core.shacl.ttl"
-  quiet gen-sqlddl          "$MODEL" > "$GEN/core.sql"
-  quiet gen-pydantic        "$MODEL" > "$GEN/core_pydantic.py"
-  quiet gen-typescript      "$MODEL" > "$GEN/core.d.ts"
-  quiet gen-jsonld-context  "$MODEL" > "$GEN/core.context.jsonld"
-  quiet gen-erdiagram       "$MODEL" > "$GEN/core.er.mmd"
+  gen "$GEN/core.schema.json"    gen-json-schema    "$MODEL"
+  gen "$GEN/core.shacl.ttl"      gen-shacl          "$MODEL"
+  gen "$GEN/core.sql"            gen-sqlddl         "$MODEL"
+  gen "$GEN/core_pydantic.py"    gen-pydantic       "$MODEL"
+  gen "$GEN/core.d.ts"           gen-typescript     "$MODEL"
+  gen "$GEN/core.context.jsonld" gen-jsonld-context "$MODEL"
+  gen "$GEN/core.er.mmd"         gen-erdiagram      "$MODEL"
   "$(resolve_python)" scripts/normalize-generated.py
   echo "spec: $(ls -1 "$GEN" | wc -l) artifacts regenerated"
 }
