@@ -1615,7 +1615,7 @@
             "type": "string"
         }
     },
-    "$id": "https://permitgraph.dev/spec/model/core",
+    "$id": "https://wildgen3.github.io/permitgraph/spec/model/core",
     "$schema": "https://json-schema.org/draft/2019-09/schema",
     "additionalProperties": true,
     "metamodel_version": "1.11.0",

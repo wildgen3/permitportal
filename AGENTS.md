@@ -274,6 +274,15 @@ This section is the point of the file.
   in a repository whose entire argument is "controls, not promises", an unimplemented
   control is the most damaging possible defect. Grep for every claim of enforcement and
   verify each one resolves to code.**
+- **Three GitHub Action SHAs were written from memory, and all three were wrong.** Setting
+  up the Pages workflow, the pins for `configure-pages`, `upload-pages-artifact` and
+  `deploy-pages` were confidently wrong in both the SHA *and* the major version — the real
+  releases were a full major ahead. The workflow would have failed to resolve the action.
+  This is the rule already written at the top of this file ("pin exact versions and verify
+  against the registry, not against training data") violated while writing the file that
+  contains it. Every pin in both repositories is now verified against the API. **Rule:
+  a SHA is never recalled, only looked up. `gh api repos/OWNER/REPO/tags` costs one call.**
+
 - **A second claimed gate did not exist — the one behind the central decision.** Five
   places (this file, ADR-0001, the AI-layer spec, the architecture doc, and the eval gate
   table) stated that CI asserts the rules engine has no model-client dependency. Nothing

@@ -1,4 +1,4 @@
-id: https://permitgraph.dev/spec/model/core
+id: https://wildgen3.github.io/permitgraph/spec/model/core
 name: permitgraph-core
 title: PermitGraph canonical model
 description: >-
@@ -14,7 +14,7 @@ license: https://creativecommons.org/licenses/by/4.0/
 
 prefixes:
   linkml: https://w3id.org/linkml/
-  pg: https://permitgraph.dev/spec/model/core/
+  pg: https://wildgen3.github.io/permitgraph/spec/model/core/
   skos: http://www.w3.org/2004/02/skos/core#
   xkos: http://rdf-vocabulary.ddialliance.org/xkos#
   ceterms: https://purl.org/ctdl/terms/

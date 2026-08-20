@@ -4,7 +4,7 @@ PREFIX sh: <http://www.w3.org/ns/shacl#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-<https://permitgraph.dev/spec/model/core/CodeTranslation>
+<https://wildgen3.github.io/permitgraph/spec/model/core/CodeTranslation>
     a sh:NodeShape ;
     rdfs:comment "The result of walking one or more correspondences. The hop path is retained so a translation can be audited rather than trusted." ;
     sh:closed true ;
@@ -14,18 +14,18 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     sh:property 
         [
             sh:datatype xsd:boolean ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/review_required> ;
+        ] ,
+        [
+            sh:datatype xsd:boolean ;
             sh:description "True only when every hop is an exactMatch. Close-match chains never auto-compose." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/is_composable> ;
-        ] ,
-        [
-            sh:datatype xsd:boolean ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/review_required> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/is_composable> ;
         ] ,
         [
             sh:in (
@@ -36,48 +36,48 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
                 skos:relatedMatch
             ) ;
             sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/match_type_chain> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:nodeKind sh:Literal ;
-            sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/result_code> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/SchemeVersion> ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/target_scheme_version> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/match_type_chain> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:description "Ordered correspondence identifiers." ;
             sh:nodeKind sh:Literal ;
             sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/hop_path> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/hop_path> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/ClassificationAssignment> ;
+            sh:datatype xsd:string ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/result_code> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/SchemeVersion> ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 2 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/target_scheme_version> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/ClassificationAssignment> ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/assignment> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/assignment> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/CodeTranslation> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/CodeTranslation> ;
 .
 
-<https://permitgraph.dev/spec/model/core/ConceptMapping>
+<https://wildgen3.github.io/permitgraph/spec/model/core/ConceptMapping>
     a sh:NodeShape ;
     rdfs:comment "One row of a correspondence." ;
     sh:closed true ;
@@ -86,6 +86,50 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     ) ;
     sh:property 
         [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Concept> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 2 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/source_concept> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/asserted_by> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Concept> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 3 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/target_concept> ;
+        ] ,
+        [
+            sh:datatype xsd:decimal ;
+            sh:description "Local extension. XKOS 1.2 defines no such property." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/apportionment_ratio> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Correspondence> ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 1 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/correspondence> ;
+        ] ,
+        [
             sh:in (
                 skos:exactMatch
                 skos:closeMatch
@@ -96,43 +140,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/match_type> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/asserted_by> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/Concept> ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/source_concept> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/Concept> ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/target_concept> ;
-        ] ,
-        [
-            sh:datatype xsd:decimal ;
-            sh:description "Local extension. XKOS 1.2 defines no such property." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/apportionment_ratio> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/match_type> ;
         ] ,
         [
             sh:datatype xsd:decimal ;
@@ -140,20 +148,12 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/match_strength> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/Correspondence> ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/correspondence> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/match_strength> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/ConceptMapping> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/ConceptMapping> ;
 .
 
-<https://permitgraph.dev/spec/model/core/CredentialDependencyEdge>
+<https://wildgen3.github.io/permitgraph/spec/model/core/CredentialDependencyEdge>
     a sh:NodeShape ;
     rdfs:comment "A derived, typed edge used for topological ordering. Cycles are a transcription error in the source law and fail CI; they are not a runtime condition to handle." ;
     sh:closed true ;
@@ -162,26 +162,34 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     ) ;
     sh:property 
         [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/Requirement> ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/derived_from_requirement> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/Credential> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Credential> ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/to_credential> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/to_credential> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Credential> ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 1 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/from_credential> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Requirement> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 4 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/derived_from_requirement> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -189,20 +197,12 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/edge_kind> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/Credential> ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/from_credential> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/edge_kind> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/CredentialDependencyEdge> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/CredentialDependencyEdge> ;
 .
 
-<https://permitgraph.dev/spec/model/core/Determination>
+<https://wildgen3.github.io/permitgraph/spec/model/core/Determination>
     a sh:NodeShape ;
     rdfs:comment "A reproducible answer. Pinning the rule version, the law date, and a hash of the inputs is what lets the system answer \"why did it say that in March\"." ;
     sh:closed true ;
@@ -211,11 +211,23 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     ) ;
     sh:property 
         [
+            sh:in (
+                "business"
+                "establishment"
+                "process"
+                "activity"
+            ) ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:order 2 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/subject_scope> ;
+        ] ,
+        [
             sh:datatype xsd:dateTime ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 12 ;
-            sh:path <https://permitgraph.dev/spec/model/core/determined_at> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/determined_at> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -223,7 +235,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 11 ;
-            sh:path <https://permitgraph.dev/spec/model/core/evidence_tree> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/evidence_tree> ;
         ] ,
         [
             sh:in (
@@ -235,26 +247,14 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/result> ;
-        ] ,
-        [
-            sh:in (
-                "business"
-                "establishment"
-                "process"
-                "activity"
-            ) ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/subject_scope> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/result> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -262,23 +262,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/engine_version> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/rule_version_id> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/subject_ref> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/engine_version> ;
         ] ,
         [
             sh:datatype xsd:date ;
@@ -286,14 +270,14 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 8 ;
-            sh:path <https://permitgraph.dev/spec/model/core/as_of_law> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/as_of_law> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/AttributeDefinition> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/AttributeDefinition> ;
             sh:description "What must be answered next when the result is indeterminate." ;
             sh:nodeKind sh:IRI ;
             sh:order 10 ;
-            sh:path <https://permitgraph.dev/spec/model/core/missing_attributes> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/missing_attributes> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -301,28 +285,44 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 9 ;
-            sh:path <https://permitgraph.dev/spec/model/core/input_snapshot_hash> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/input_snapshot_hash> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/ClassificationAssignment> ;
-            sh:description "MUST reference an assignment whose confirmation_state is not `unconfirmed`. Enforced by a database CHECK constraint, not by application code." ;
+            sh:datatype xsd:string ;
             sh:maxCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/classification_assignment> ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/rule_version_id> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Obligation> ;
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/subject_ref> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Obligation> ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/obligation> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/obligation> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/ClassificationAssignment> ;
+            sh:description "MUST reference an assignment whose confirmation_state is not `unconfirmed`. Enforced by a database CHECK constraint, not by application code." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 5 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/classification_assignment> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/Determination> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/Determination> ;
 .
 
-<https://permitgraph.dev/spec/model/core/Fact>
+<https://wildgen3.github.io/permitgraph/spec/model/core/Fact>
     a sh:NodeShape ;
     rdfs:comment "An open-world fact carrying the long tail of attributes that do not warrant a typed column." ;
     sh:closed true ;
@@ -331,6 +331,13 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     ) ;
     sh:property 
         [
+            sh:datatype xsd:decimal ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/confidence> ;
+        ] ,
+        [
             sh:in (
                 "business"
                 "establishment"
@@ -340,28 +347,42 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/subject_scope> ;
-        ] ,
-        [
-            sh:datatype xsd:decimal ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 9 ;
-            sh:path <https://permitgraph.dev/spec/model/core/confidence> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/subject_scope> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
-            sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/unit> ;
+            sh:order 8 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/source> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
+        ] ,
+        [
+            sh:datatype xsd:date ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/effective_from> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/unit> ;
+        ] ,
+        [
+            sh:datatype xsd:date ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/effective_to> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -369,21 +390,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/value_typed> ;
-        ] ,
-        [
-            sh:datatype xsd:date ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/effective_to> ;
-        ] ,
-        [
-            sh:datatype xsd:date ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/effective_from> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/value_typed> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -391,27 +398,20 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/subject_ref> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/subject_ref> ;
         ] ,
         [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 8 ;
-            sh:path <https://permitgraph.dev/spec/model/core/source> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/AttributeDefinition> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/AttributeDefinition> ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/attribute> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/attribute> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/Fact> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/Fact> ;
 .
 
-<https://permitgraph.dev/spec/model/core/RollupRule>
+<https://wildgen3.github.io/permitgraph/spec/model/core/RollupRule>
     a sh:NodeShape ;
     rdfs:comment "How a code at a wider scope derives from a narrower one, as data. Encoding this as rows is what lets one regime forbid the roll-up that another requires." ;
     sh:closed true ;
@@ -420,6 +420,13 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     ) ;
     sh:property 
         [
+            sh:datatype xsd:boolean ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/no_default_from_parent> ;
+        ] ,
+        [
             sh:in (
                 "business"
                 "establishment"
@@ -429,29 +436,26 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/source_scope> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/source_scope> ;
         ] ,
         [
-            sh:datatype xsd:boolean ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/no_default_from_parent> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
+            sh:in (
+                "business"
+                "establishment"
+                "process"
+                "activity"
+            ) ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/authority_citation> ;
+            sh:order 1 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/target_scope> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ,
         [
             sh:in (
@@ -464,31 +468,27 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/method> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/method> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Regime> ;
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/authority_citation> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Regime> ;
             sh:maxCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/regime> ;
-        ] ,
-        [
-            sh:in (
-                "business"
-                "establishment"
-                "process"
-                "activity"
-            ) ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/target_scope> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/regime> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/RollupRule> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/RollupRule> ;
 .
 
-<https://permitgraph.dev/spec/model/core/Activity>
+<https://wildgen3.github.io/permitgraph/spec/model/core/Activity>
     a sh:NodeShape ;
     rdfs:comment "A line of business carried on at an establishment." ;
     sh:closed true ;
@@ -497,19 +497,20 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     ) ;
     sh:property 
         [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/description> ;
+        ] ,
+        [
             sh:datatype xsd:boolean ;
             sh:description "Deliberately NOT uniquely constrained. Some programmes speak of \"primary industrial activity(ies)\" in the plural, and an activity matching a narrative category is primary regardless of its code." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/is_primary> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/is_primary> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -517,14 +518,21 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/primacy_basis> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/primacy_basis> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ,
         [
             sh:datatype xsd:decimal ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/receipts_share> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/receipts_share> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -532,28 +540,20 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/primacy_justification_text> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/primacy_justification_text> ;
         ] ,
         [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/description> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/Establishment> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Establishment> ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/establishment> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/establishment> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/Activity> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/Activity> ;
 .
 
-<https://permitgraph.dev/spec/model/core/BusinessEntity>
+<https://wildgen3.github.io/permitgraph/spec/model/core/BusinessEntity>
     a sh:NodeShape ;
     rdfs:comment "A legal entity. The company scope." ;
     sh:closed true ;
@@ -562,41 +562,11 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     ) ;
     sh:property 
         [
-            sh:datatype xsd:date ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/formation_date> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:description "LLC, corporation, sole proprietorship, partnership." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/entity_form> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/legal_name> ;
-        ] ,
-        [
             sh:datatype xsd:decimal ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/company_annual_receipts> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/company_annual_receipts> ;
         ] ,
         [
             sh:datatype xsd:integer ;
@@ -604,20 +574,50 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/company_peak_employment_prior_cy> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/company_peak_employment_prior_cy> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Establishment> ;
-            sh:nodeKind sh:IRI ;
-            sh:order 8 ;
-            sh:path <https://permitgraph.dev/spec/model/core/establishments> ;
+            sh:datatype xsd:string ;
+            sh:description "LLC, corporation, sole proprietorship, partnership." ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/entity_form> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Jurisdiction> ;
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/legal_name> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
+        ] ,
+        [
+            sh:datatype xsd:date ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/formation_date> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Jurisdiction> ;
             sh:maxCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/formation_jurisdiction> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/formation_jurisdiction> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Establishment> ;
+            sh:nodeKind sh:IRI ;
+            sh:order 8 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/establishments> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -625,12 +625,12 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/affiliation_group_id> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/affiliation_group_id> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/BusinessEntity> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/BusinessEntity> ;
 .
 
-<https://permitgraph.dev/spec/model/core/ChemicalHolding>
+<https://wildgen3.github.io/permitgraph/spec/model/core/ChemicalHolding>
     a sh:NodeShape ;
     rdfs:comment "A chemical held at a process. Data class is restricted." ;
     sh:closed true ;
@@ -643,57 +643,50 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/container_type> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/container_type> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/cas_number> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/cas_number> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/hazard_category> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/hazard_category> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Process> ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 1 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/process> ;
         ] ,
         [
             sh:datatype xsd:decimal ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/flashpoint_c> ;
-        ] ,
-        [
-            sh:datatype xsd:decimal ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/max_quantity> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/Process> ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/process> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/flashpoint_c> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/uom> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/uom> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -701,12 +694,19 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 8 ;
-            sh:path <https://permitgraph.dev/spec/model/core/source> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/source> ;
+        ] ,
+        [
+            sh:datatype xsd:decimal ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/max_quantity> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/ChemicalHolding> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/ChemicalHolding> ;
 .
 
-<https://permitgraph.dev/spec/model/core/Correspondence>
+<https://wildgen3.github.io/permitgraph/spec/model/core/Correspondence>
     a sh:NodeShape ;
     rdfs:comment "A published crosswalk between two scheme versions, as an addressable and versionable object rather than a lookup table." ;
     sh:closed true ;
@@ -719,56 +719,56 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/published_on> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/published_on> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/coverage_notes> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/coverage_notes> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/file_provenance> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/file_provenance> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/SchemeVersion> ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 2 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/target_scheme_version> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/publisher> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/publisher> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/SchemeVersion> ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/target_scheme_version> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/SchemeVersion> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/SchemeVersion> ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/source_scheme_version> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/source_scheme_version> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/Correspondence> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/Correspondence> ;
 .
 
-<https://permitgraph.dev/spec/model/core/EquipmentItem>
+<https://wildgen3.github.io/permitgraph/spec/model/core/EquipmentItem>
     a sh:NodeShape ;
     sh:closed true ;
     sh:ignoredProperties (
@@ -780,40 +780,40 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/equipment_type> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/equipment_type> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Process> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Process> ;
             sh:maxCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/process> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/process> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/uom> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ,
         [
             sh:datatype xsd:decimal ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/design_capacity> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/uom> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/design_capacity> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/EquipmentItem> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/EquipmentItem> ;
 .
 
-<https://permitgraph.dev/spec/model/core/Obligation>
+<https://wildgen3.github.io/permitgraph/spec/model/core/Obligation>
     a sh:NodeShape ;
     sh:closed true ;
     sh:ignoredProperties (
@@ -821,42 +821,12 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     ) ;
     sh:property 
         [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/trigger_rule_id> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/LegalSource> ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/legal_source> ;
-        ] ,
-        [
             sh:datatype xsd:boolean ;
             sh:description "Survives every exemption in its regime. A non-waivable obligation is surfaced even when the applicant is otherwise exempt." ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 8 ;
-            sh:path <https://permitgraph.dev/spec/model/core/non_waivable> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/recurrence> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/non_waivable> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -864,22 +834,28 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/obligation_type> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/obligation_type> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/deadline_rule> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/deadline_rule> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Regime> ;
+            sh:datatype xsd:string ;
             sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/regime> ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/recurrence> ;
         ] ,
         [
             sh:in (
@@ -891,12 +867,36 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/scope_unit> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/scope_unit> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/trigger_rule_id> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Regime> ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 1 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/regime> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/LegalSource> ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 5 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/legal_source> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/Obligation> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/Obligation> ;
 .
 
-<https://permitgraph.dev/spec/model/core/ProductOffering>
+<https://wildgen3.github.io/permitgraph/spec/model/core/ProductOffering>
     a sh:NodeShape ;
     rdfs:comment "A product or service offered. A separate demand-based axis; not derivable from the supply-based industry classification." ;
     sh:closed true ;
@@ -905,37 +905,37 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     ) ;
     sh:property 
         [
-            sh:datatype xsd:boolean ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/is_regulated_substance> ;
-        ] ,
-        [
             sh:datatype xsd:decimal ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/revenue_share> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/revenue_share> ;
+        ] ,
+        [
+            sh:datatype xsd:boolean ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/is_regulated_substance> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Establishment> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Establishment> ;
             sh:maxCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/establishment> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/establishment> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/ProductOffering> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/ProductOffering> ;
 .
 
-<https://permitgraph.dev/spec/model/core/ProvenanceRecord>
+<https://wildgen3.github.io/permitgraph/spec/model/core/ProvenanceRecord>
     a sh:NodeShape ;
     rdfs:comment "What produced a surfaced item. No obligation is displayed without one." ;
     sh:closed true ;
@@ -944,65 +944,65 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     ) ;
     sh:property 
         [
-            sh:datatype xsd:integer ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/rank_at_selection> ;
-        ] ,
-        [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/prompt_version> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/prompt_version> ;
         ] ,
         [
-            sh:datatype xsd:string ;
+            sh:datatype xsd:integer ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/model_id> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/index_version> ;
-        ] ,
-        [
-            sh:datatype xsd:dateTime ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/confirmed_at> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/confirmed_by> ;
+            sh:order 4 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/rank_at_selection> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/ui_version> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/ui_version> ;
+        ] ,
+        [
+            sh:datatype xsd:dateTime ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/confirmed_at> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/confirmed_by> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/model_id> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/index_version> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/ProvenanceRecord> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/ProvenanceRecord> ;
 .
 
-<https://permitgraph.dev/spec/model/core/Scheme>
+<https://wildgen3.github.io/permitgraph/spec/model/core/Scheme>
     a sh:NodeShape ;
     rdfs:comment "A classification scheme." ;
     sh:closed true ;
@@ -1015,7 +1015,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/publisher> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/publisher> ;
         ] ,
         [
             sh:datatype xsd:boolean ;
@@ -1023,14 +1023,14 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/is_industry_scheme> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/is_industry_scheme> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -1038,12 +1038,12 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/label> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/label> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/Scheme> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/Scheme> ;
 .
 
-<https://permitgraph.dev/spec/model/core/AttributeDefinition>
+<https://wildgen3.github.io/permitgraph/spec/model/core/AttributeDefinition>
     a sh:NodeShape ;
     rdfs:comment "The registry entry for a fact the system may collect or a rule may test. A rule referencing an unregistered attribute, or one at a scope that disagrees with this entry, fails CI. This is what makes scope-confusion bugs unwriteable." ;
     sh:closed true ;
@@ -1052,44 +1052,12 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     ) ;
     sh:property 
         [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/unit_dimension> ;
-        ] ,
-        [
             sh:datatype xsd:boolean ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 8 ;
-            sh:path <https://permitgraph.dev/spec/model/core/llm_egress_allowed> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/enum_ref> ;
-        ] ,
-        [
-            sh:in (
-                "public"
-                "business_confidential"
-                "restricted"
-            ) ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/data_class> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/uri> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/llm_egress_allowed> ;
         ] ,
         [
             sh:in (
@@ -1101,14 +1069,39 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/scope_unit> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/scope_unit> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/collection_method> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/collection_method> ;
+        ] ,
+        [
+            sh:in (
+                "public"
+                "business_confidential"
+                "restricted"
+            ) ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:order 7 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/data_class> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/uri> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/unit_dimension> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -1116,7 +1109,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/label> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/label> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -1124,12 +1117,19 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/datatype> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/datatype> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/enum_ref> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/AttributeDefinition> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/AttributeDefinition> ;
 .
 
-<https://permitgraph.dev/spec/model/core/Authority>
+<https://wildgen3.github.io/permitgraph/spec/model/core/Authority>
     a sh:NodeShape ;
     rdfs:comment "An agency that issues credentials or administers obligations." ;
     sh:closed true ;
@@ -1138,18 +1138,18 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     ) ;
     sh:property 
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Jurisdiction> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Jurisdiction> ;
             sh:maxCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/jurisdiction> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/jurisdiction> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -1157,12 +1157,12 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/label> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/label> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/Authority> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/Authority> ;
 .
 
-<https://permitgraph.dev/spec/model/core/ClassificationAssignment>
+<https://wildgen3.github.io/permitgraph/spec/model/core/ClassificationAssignment>
     a sh:NodeShape ;
     rdfs:comment "A candidate or confirmed code for a subject. Candidates are presented ranked for human confirmation; only a confirmed assignment may be the code of record." ;
     sh:closed true ;
@@ -1175,14 +1175,37 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/rank> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/rank> ;
         ] ,
         [
-            sh:datatype xsd:decimal ;
+            sh:datatype xsd:boolean ;
             sh:maxCount 1 ;
+            sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
-            sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/score> ;
+            sh:order 9 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/is_code_of_record> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/ProvenanceRecord> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 11 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/provenance> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:description "What the applicant was offered, not merely what they chose. Competent people disagree on the same description; an appeal needs the offered set." ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/alternatives_shown> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/code> ;
         ] ,
         [
             sh:in (
@@ -1194,44 +1217,14 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/subject_scope> ;
-        ] ,
-        [
-            sh:datatype xsd:boolean ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 9 ;
-            sh:path <https://permitgraph.dev/spec/model/core/is_code_of_record> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:description "What the applicant was offered, not merely what they chose. Competent people disagree on the same description; an appeal needs the offered set." ;
-            sh:nodeKind sh:Literal ;
-            sh:order 10 ;
-            sh:path <https://permitgraph.dev/spec/model/core/alternatives_shown> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/subject_scope> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/ProvenanceRecord> ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 11 ;
-            sh:path <https://permitgraph.dev/spec/model/core/provenance> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/subject_ref> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ,
         [
             sh:in (
@@ -1245,15 +1238,14 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/method> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/method> ;
         ] ,
         [
-            sh:datatype xsd:string ;
+            sh:datatype xsd:decimal ;
             sh:maxCount 1 ;
-            sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/code> ;
+            sh:order 6 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/score> ;
         ] ,
         [
             sh:in (
@@ -1265,20 +1257,28 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:order 8 ;
-            sh:path <https://permitgraph.dev/spec/model/core/confirmation_state> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/confirmation_state> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/SchemeVersion> ;
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/subject_ref> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/SchemeVersion> ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/scheme_version> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/scheme_version> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/ClassificationAssignment> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/ClassificationAssignment> ;
 .
 
-<https://permitgraph.dev/spec/model/core/Concept>
+<https://wildgen3.github.io/permitgraph/spec/model/core/Concept>
     a sh:NodeShape ;
     rdfs:comment "A single code within a scheme version. Identity is the triple (scheme, vintage, code) -- never a bare code." ;
     sh:closed true ;
@@ -1296,28 +1296,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             ) ;
             sh:maxCount 1 ;
             sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/revision_status> ;
-        ] ,
-        [
-            sh:datatype xsd:integer ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/level> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/definition_text> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/parent_code> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/revision_status> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -1325,7 +1304,28 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/code> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/code> ;
+        ] ,
+        [
+            sh:datatype xsd:integer ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/level> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/definition_text> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/parent_code> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -1333,7 +1333,15 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/title> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/title> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/SchemeVersion> ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 1 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/scheme_version> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -1341,20 +1349,12 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/SchemeVersion> ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/scheme_version> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/Concept> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/Concept> ;
 .
 
-<https://permitgraph.dev/spec/model/core/JurisdictionProfile>
+<https://wildgen3.github.io/permitgraph/spec/model/core/JurisdictionProfile>
     a sh:NodeShape ;
     rdfs:comment "A jurisdiction expressed as an inclusion set with exceptions, because \"everywhere except one state\" is a common real pattern that a flat column cannot represent." ;
     sh:closed true ;
@@ -1367,38 +1367,38 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/residency_required> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/residency_required> ;
         ] ,
         [
             sh:datatype xsd:boolean ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/global_flag> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/global_flag> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Jurisdiction> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Jurisdiction> ;
             sh:nodeKind sh:IRI ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/jurisdiction_exception> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/jurisdiction_exception> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Jurisdiction> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Jurisdiction> ;
             sh:nodeKind sh:IRI ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/main_jurisdiction> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/main_jurisdiction> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/JurisdictionProfile> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/JurisdictionProfile> ;
 .
 
-<https://permitgraph.dev/spec/model/core/Regime>
+<https://wildgen3.github.io/permitgraph/spec/model/core/Regime>
     a sh:NodeShape ;
     rdfs:comment "A regulatory programme that generates obligations." ;
     sh:closed true ;
@@ -1416,14 +1416,14 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/scope_unit> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/scope_unit> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -1431,19 +1431,19 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/label> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/label> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Authority> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Authority> ;
             sh:maxCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/authority> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/authority> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/Regime> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/Regime> ;
 .
 
-<https://permitgraph.dev/spec/model/core/Requirement>
+<https://wildgen3.github.io/permitgraph/spec/model/core/Requirement>
     a sh:NodeShape ;
     rdfs:comment "A reified condition between a credential and what it demands. A table rather than a foreign key, because the edge carries jurisdiction, residency, experience, cost, and dates. Recursive: AND groups contain OR alternative sets contain further groups, which is what real licensing paths need." ;
     sh:closed true ;
@@ -1456,57 +1456,21 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/residency_required> ;
-        ] ,
-        [
-            sh:datatype xsd:date ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 10 ;
-            sh:path <https://permitgraph.dev/spec/model/core/effective_from> ;
-        ] ,
-        [
-            sh:datatype xsd:date ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 11 ;
-            sh:path <https://permitgraph.dev/spec/model/core/effective_to> ;
-        ] ,
-        [
-            sh:datatype xsd:decimal ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 8 ;
-            sh:path <https://permitgraph.dev/spec/model/core/years_experience> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/LegalSource> ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 12 ;
-            sh:path <https://permitgraph.dev/spec/model/core/legal_source> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/residency_required> ;
         ] ,
         [
             sh:datatype xsd:integer ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/min_age> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/min_age> ;
         ] ,
         [
-            sh:datatype xsd:string ;
+            sh:datatype xsd:date ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/Requirement> ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/parent> ;
+            sh:order 10 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/effective_from> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -1514,36 +1478,80 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 14 ;
-            sh:path <https://permitgraph.dev/spec/model/core/target_predicate> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/target_predicate> ;
+        ] ,
+        [
+            sh:datatype xsd:decimal ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/years_experience> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/JurisdictionProfile> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 5 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/jurisdiction_profile> ;
+        ] ,
+        [
+            sh:datatype xsd:date ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/effective_to> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Requirement> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 2 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/parent> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Credential> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 13 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/target_credential> ;
         ] ,
         [
             sh:datatype xsd:decimal ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 9 ;
-            sh:path <https://permitgraph.dev/spec/model/core/estimated_cost> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/estimated_cost> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Credential> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Credential> ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/credential> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/credential> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Credential> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/LegalSource> ;
             sh:maxCount 1 ;
+            sh:minCount 1 ;
             sh:nodeKind sh:IRI ;
-            sh:order 13 ;
-            sh:path <https://permitgraph.dev/spec/model/core/target_credential> ;
+            sh:order 12 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/legal_source> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/JurisdictionProfile> ;
+            sh:datatype xsd:string ;
+            sh:description "prerequisite, concurrent, conditional-on, or renewal." ;
             sh:maxCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/jurisdiction_profile> ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/edge_kind> ;
         ] ,
         [
             sh:in (
@@ -1554,20 +1562,12 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/node_type> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:description "prerequisite, concurrent, conditional-on, or renewal." ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/edge_kind> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/node_type> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/Requirement> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/Requirement> ;
 .
 
-<https://permitgraph.dev/spec/model/core/LegalSource>
+<https://wildgen3.github.io/permitgraph/spec/model/core/LegalSource>
     a sh:NodeShape ;
     rdfs:comment "A retrieved, hashed, point-in-time snapshot of authoritative text. Every obligation traces to one of these." ;
     sh:closed true ;
@@ -1576,11 +1576,18 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     ) ;
     sh:property 
         [
+            sh:datatype xsd:date ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/amendment_date> ;
+        ] ,
+        [
             sh:datatype xsd:dateTime ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/retrieved_at> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/retrieved_at> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -1588,42 +1595,35 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/source_url> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/text_hash> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/source_url> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/source_system> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/source_system> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/text_hash> ;
         ] ,
         [
             sh:datatype xsd:date ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/as_of_date> ;
-        ] ,
-        [
-            sh:datatype xsd:date ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/amendment_date> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/as_of_date> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -1631,12 +1631,12 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/citation> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/citation> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/LegalSource> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/LegalSource> ;
 .
 
-<https://permitgraph.dev/spec/model/core/Process>
+<https://wildgen3.github.io/permitgraph/spec/model/core/Process>
     a sh:NodeShape ;
     rdfs:comment "An activity unit beneath an establishment. Exists because chemical-process regimes attach codes and quantity thresholds below the site level, and forbid inheriting the site's primary code as a default." ;
     sh:closed true ;
@@ -1649,53 +1649,53 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/is_covered_process> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/is_covered_process> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/name> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/EquipmentItem> ;
-            sh:nodeKind sh:IRI ;
-            sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/equipment> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/name> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/process_type> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/process_type> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/ChemicalHolding> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/EquipmentItem> ;
+            sh:nodeKind sh:IRI ;
+            sh:order 6 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/equipment> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/ChemicalHolding> ;
             sh:nodeKind sh:IRI ;
             sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/chemical_holdings> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/chemical_holdings> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Establishment> ;
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Establishment> ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/establishment> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/establishment> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/Process> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/Process> ;
 .
 
-<https://permitgraph.dev/spec/model/core/Credential>
+<https://wildgen3.github.io/permitgraph/spec/model/core/Credential>
     a sh:NodeShape ;
     rdfs:comment "A licence, certification, registration, or permit." ;
     sh:closed true ;
@@ -1704,32 +1704,11 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
     ) ;
     sh:property 
         [
-            sh:class <https://permitgraph.dev/spec/model/core/LegalSource> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/JurisdictionProfile> ;
             sh:maxCount 1 ;
             sh:nodeKind sh:IRI ;
-            sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/legal_source> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:description "Adopted from CTDL, which types this as an untyped string with no vintage validation, so codes from different revisions are indistinguishable." ;
-            sh:nodeKind sh:Literal ;
-            sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/industry_codes> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
-        ] ,
-        [
-            sh:datatype xsd:integer ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 9 ;
-            sh:path <https://permitgraph.dev/spec/model/core/renewal_period_months> ;
+            sh:order 4 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/jurisdiction_profile> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -1737,14 +1716,28 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/label> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/label> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/JurisdictionProfile> ;
+            sh:datatype xsd:string ;
+            sh:description "Adopted from CTDL, which types this as an untyped string with no vintage validation, so codes from different revisions are indistinguishable." ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/industry_codes> ;
+        ] ,
+        [
+            sh:datatype xsd:integer ;
             sh:maxCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/jurisdiction_profile> ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/renewal_period_months> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ,
         [
             sh:in (
@@ -1756,14 +1749,21 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/credential_type> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/credential_type> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/LegalSource> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 7 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/legal_source> ;
         ] ,
         [
             sh:datatype xsd:decimal ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 8 ;
-            sh:path <https://permitgraph.dev/spec/model/core/estimated_cost> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/estimated_cost> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -1771,20 +1771,20 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/industry_code_vintage> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/industry_code_vintage> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Authority> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Authority> ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/issuing_authority> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/issuing_authority> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/Credential> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/Credential> ;
 .
 
-<https://permitgraph.dev/spec/model/core/Establishment>
+<https://wildgen3.github.io/permitgraph/spec/model/core/Establishment>
     a sh:NodeShape ;
     rdfs:comment "A single physical site operated by a business entity." ;
     sh:closed true ;
@@ -1797,87 +1797,87 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/is_unincorporated> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/is_unincorporated> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Process> ;
-            sh:nodeKind sh:IRI ;
-            sh:order 10 ;
-            sh:path <https://permitgraph.dev/spec/model/core/processes> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/site_address> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/ProductOffering> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/ProductOffering> ;
             sh:nodeKind sh:IRI ;
             sh:order 11 ;
-            sh:path <https://permitgraph.dev/spec/model/core/product_offerings> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/Activity> ;
-            sh:nodeKind sh:IRI ;
-            sh:order 9 ;
-            sh:path <https://permitgraph.dev/spec/model/core/activities> ;
-        ] ,
-        [
-            sh:datatype xsd:date ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 7 ;
-            sh:path <https://permitgraph.dev/spec/model/core/opened_on> ;
-        ] ,
-        [
-            sh:datatype xsd:date ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 8 ;
-            sh:path <https://permitgraph.dev/spec/model/core/closed_on> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
-        ] ,
-        [
-            sh:datatype xsd:integer ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/employment_at_establishment> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/product_offerings> ;
         ] ,
         [
             sh:datatype xsd:integer ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/floor_area_sqft> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/floor_area_sqft> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/BusinessEntity> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Process> ;
+            sh:nodeKind sh:IRI ;
+            sh:order 10 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/processes> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/site_address> ;
+        ] ,
+        [
+            sh:datatype xsd:date ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/opened_on> ;
+        ] ,
+        [
+            sh:datatype xsd:integer ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/employment_at_establishment> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
+        ] ,
+        [
+            sh:datatype xsd:date ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/closed_on> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/BusinessEntity> ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/business_entity> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/business_entity> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Jurisdiction> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Jurisdiction> ;
             sh:description "Ordered nation to place. A set, never a scalar." ;
             sh:nodeKind sh:IRI ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/jurisdiction_path> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/jurisdiction_path> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Activity> ;
+            sh:nodeKind sh:IRI ;
+            sh:order 9 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/activities> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/Establishment> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/Establishment> ;
 .
 
-<https://permitgraph.dev/spec/model/core/SchemeVersion>
+<https://wildgen3.github.io/permitgraph/spec/model/core/SchemeVersion>
     a sh:NodeShape ;
     rdfs:comment "A dated edition of a scheme. Vintage is part of concept identity." ;
     sh:closed true ;
@@ -1890,14 +1890,14 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/effective_to> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/effective_to> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ,
         [
             sh:datatype xsd:string ;
@@ -1905,27 +1905,27 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:minCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/vintage> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/vintage> ;
         ] ,
         [
             sh:datatype xsd:date ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/effective_from> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/effective_from> ;
         ] ,
         [
-            sh:class <https://permitgraph.dev/spec/model/core/Scheme> ;
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Scheme> ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:nodeKind sh:IRI ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/scheme> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/scheme> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/SchemeVersion> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/SchemeVersion> ;
 .
 
-<https://permitgraph.dev/spec/model/core/Jurisdiction>
+<https://wildgen3.github.io/permitgraph/spec/model/core/Jurisdiction>
     a sh:NodeShape ;
     sh:closed true ;
     sh:ignoredProperties (
@@ -1937,28 +1937,43 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 2 ;
-            sh:path <https://permitgraph.dev/spec/model/core/geoid> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/geoid> ;
+        ] ,
+        [
+            sh:class <https://wildgen3.github.io/permitgraph/spec/model/core/Jurisdiction> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 4 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/parent> ;
         ] ,
         [
             sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 0 ;
-            sh:path <https://permitgraph.dev/spec/model/core/id> ;
-        ] ,
-        [
-            sh:datatype xsd:date ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 6 ;
-            sh:path <https://permitgraph.dev/spec/model/core/effective_to> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/id> ;
         ] ,
         [
             sh:datatype xsd:date ;
             sh:maxCount 1 ;
             sh:nodeKind sh:Literal ;
             sh:order 5 ;
-            sh:path <https://permitgraph.dev/spec/model/core/effective_from> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/effective_from> ;
+        ] ,
+        [
+            sh:datatype xsd:date ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/effective_to> ;
+        ] ,
+        [
+            sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/label> ;
         ] ,
         [
             sh:in (
@@ -1970,22 +1985,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:order 1 ;
-            sh:path <https://permitgraph.dev/spec/model/core/level> ;
-        ] ,
-        [
-            sh:class <https://permitgraph.dev/spec/model/core/Jurisdiction> ;
-            sh:maxCount 1 ;
-            sh:nodeKind sh:IRI ;
-            sh:order 4 ;
-            sh:path <https://permitgraph.dev/spec/model/core/parent> ;
-        ] ,
-        [
-            sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:nodeKind sh:Literal ;
-            sh:order 3 ;
-            sh:path <https://permitgraph.dev/spec/model/core/label> ;
+            sh:path <https://wildgen3.github.io/permitgraph/spec/model/core/level> ;
         ] ;
-    sh:targetClass <https://permitgraph.dev/spec/model/core/Jurisdiction> ;
+    sh:targetClass <https://wildgen3.github.io/permitgraph/spec/model/core/Jurisdiction> ;
 .
