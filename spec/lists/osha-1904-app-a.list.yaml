@@ -1,0 +1,39 @@
+# Code list: establishments partially exempt from OSHA recordkeeping by industry.
+#
+# NOT exhaustive as reproduced here. This file is a SPECIFICATION FIXTURE carrying a
+# representative subset sufficient to exercise the rule and its tests; the full list
+# has ~from the published appendix. `is_complete: false` is checked by the linter,
+# which forbids a FALSE result from an incomplete list even when semantics are closed.
+id: lists/osha_1904_app_a
+label: OSHA 29 CFR 1904 Subpart B Appendix A
+scheme: NAICS
+list_vintage: "2007"
+list_semantics: enumerative_closed
+is_complete: false
+edition: "2014-09-18"
+source_url: https://www.ecfr.gov/current/title-29/subtitle-B/chapter-XVII/part-1904
+citation: 29 CFR 1904 Subpart B Appendix A
+vintage_note: >-
+  The NAICS-based list was adopted 2014-09-18 (79 FR 56186). Before that date the
+  appendix keyed to SIC, not NAICS. A claim that this list has been unchanged since
+  2001 is wrong and appears in secondary sources; see docs/03-source-register.md.
+retrieved_at: "2026-08-19"
+codes:
+  - code: "4412"
+    title: Other Motor Vehicle Dealers
+  - code: "4431"
+    title: Electronics and Appliance Stores
+  - code: "4461"
+    title: Health and Personal Care Stores
+  - code: "4481"
+    title: Clothing Stores
+  - code: "5241"
+    title: Insurance Carriers
+  - code: "5412"
+    title: Accounting, Tax Preparation, Bookkeeping, and Payroll Services
+  - code: "5413"
+    title: Architectural, Engineering, and Related Services
+  - code: "6111"
+    title: Elementary and Secondary Schools
+  - code: "8112"
+    title: Electronic and Precision Equipment Repair and Maintenance

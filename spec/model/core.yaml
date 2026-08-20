@@ -1,0 +1,842 @@
+id: https://permitgraph.dev/spec/model/core
+name: permitgraph-core
+title: PermitGraph canonical model
+description: >-
+  The canonical model of a business, its classification, the obligations that
+  attach to it, and the credentials those obligations require.
+
+  Two invariants govern everything here. First, an industry code is never a bare
+  string: the identity of a concept is the triple (scheme, vintage, code), because
+  codes have been reused for different concepts across revisions. Second, an
+  unconfirmed classification may never reach a determination -- enforced at the
+  database layer, not by application code.
+license: https://creativecommons.org/licenses/by/4.0/
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  pg: https://permitgraph.dev/spec/model/core/
+  skos: http://www.w3.org/2004/02/skos/core#
+  xkos: http://rdf-vocabulary.ddialliance.org/xkos#
+  ceterms: https://purl.org/ctdl/terms/
+  dcterms: http://purl.org/dc/terms/
+default_prefix: pg
+default_range: string
+
+imports:
+  - linkml:types
+
+# ---------------------------------------------------------------------------
+# Enumerations
+# ---------------------------------------------------------------------------
+enums:
+
+  ScopeUnit:
+    description: >-
+      The unit of analysis a fact, predicate, or obligation attaches to. Declared
+      explicitly on every attribute and every predicate, because regulations key to
+      different units and conflating them produces wrong determinations in both
+      directions.
+    permissible_values:
+      business:
+        description: The legal entity as a whole. Company-wide headcount lives here.
+      establishment:
+        description: A single physical site. Most industry-code keying happens here.
+      process:
+        description: >-
+          An activity unit within an establishment. Required by chemical-process
+          regimes, which attach codes and thresholds below the site level.
+      activity:
+        description: A line of business carried on at an establishment.
+
+  DataClass:
+    description: Disclosure sensitivity, which governs storage and model egress.
+    permissible_values:
+      public:
+      business_confidential:
+      restricted:
+        description: >-
+          Chemical inventories and comparable hazard data. Never transmitted to a
+          third-party model provider or analytics endpoint.
+
+  ConfirmationState:
+    description: >-
+      Whether a classification has been affirmed by a person. Only a non-unconfirmed
+      assignment may be referenced by a determination.
+    permissible_values:
+      unconfirmed:
+      owner_confirmed:
+      staff_confirmed:
+      agency_assigned:
+
+  AssignmentMethod:
+    description: How a candidate code came to be proposed or set.
+    permissible_values:
+      llm_candidate:
+      embedding_retrieval:
+      owner_selected:
+      agency_assigned:
+      derived_rollup:
+      crosswalk_translated:
+
+  RevisionStatus:
+    description: >-
+      A concept's fate across scheme revisions. `reused` is the dangerous one: the
+      same code string carrying a different concept in a later vintage.
+    permissible_values:
+      new:
+      revised:
+      reused:
+      retired:
+      unchanged:
+
+  MatchType:
+    description: SKOS mapping relation between two concepts.
+    permissible_values:
+      exactMatch:
+        meaning: skos:exactMatch
+      closeMatch:
+        meaning: skos:closeMatch
+      broadMatch:
+        meaning: skos:broadMatch
+      narrowMatch:
+        meaning: skos:narrowMatch
+      relatedMatch:
+        meaning: skos:relatedMatch
+
+  ListSemantics:
+    description: >-
+      Whether a code list is exhaustive. The single most consequential distinction in
+      the model: a hit on either kind proves inclusion, but only a closed list can
+      prove exclusion.
+    permissible_values:
+      enumerative_closed:
+        description: The list is exhaustive. A predicate over it may return TRUE or FALSE.
+      illustrative_open:
+        description: >-
+          The list gives examples. A predicate over it may return TRUE or UNKNOWN, and
+          never FALSE. Negation over such a list is a lint error.
+
+  TruthValue:
+    description: >-
+      Kleene three-valued logic, with the unknown case split by what resolves it.
+    permissible_values:
+      # Quoted: unquoted TRUE/FALSE are parsed by YAML as booleans, which silently
+      # renames these values to `True`/`False` in every generated artifact.
+      "TRUE":
+      "FALSE":
+      UNKNOWN_MISSING_INPUT:
+        description: Resolvable by asking the applicant a question.
+      UNKNOWN_NOT_SELF_DETERMINABLE:
+        description: >-
+          Not resolvable by the applicant at all; requires a determination by the
+          issuing authority.
+
+  NodeType:
+    description: Boolean structure of a requirement or predicate tree node.
+    permissible_values:
+      AND_GROUP:
+      OR_GROUP:
+      LEAF:
+
+  RollupMethod:
+    description: How a code at one scope is derived from codes at a narrower scope.
+    permissible_values:
+      largest_receipts:
+      largest_payroll:
+      operator_designated:
+      union_all:
+      none:
+        description: >-
+          Roll-up is prohibited for this regime. Some programmes explicitly forbid
+          defaulting a process-level code from the facility's primary code.
+
+  JurisdictionLevel:
+    permissible_values:
+      nation:
+      state:
+      county:
+      place:
+
+  CredentialType:
+    permissible_values:
+      license:
+        meaning: ceterms:License
+      certification:
+        meaning: ceterms:Certification
+      registration:
+        meaning: ceterms:Registration
+      permit:
+        description: Local extension. CTDL has no permit class.
+
+# ---------------------------------------------------------------------------
+# Business and operations
+# ---------------------------------------------------------------------------
+classes:
+
+  BusinessEntity:
+    description: A legal entity. The company scope.
+    attributes:
+      id:
+        identifier: true
+      legal_name:
+        required: true
+      entity_form:
+        description: LLC, corporation, sole proprietorship, partnership.
+      formation_jurisdiction:
+        range: Jurisdiction
+      formation_date:
+        range: date
+      company_peak_employment_prior_cy:
+        range: integer
+        description: >-
+          Peak employment across the ENTIRE company in the prior calendar year.
+          Deliberately named with a company scope, because size-based exemptions are
+          company-wide while industry-based exemptions are per-site.
+      company_annual_receipts:
+        range: decimal
+      affiliation_group_id:
+        description: Affiliate grouping, which size standards aggregate across.
+      establishments:
+        range: Establishment
+        multivalued: true
+        inlined_as_list: true
+
+  Establishment:
+    description: A single physical site operated by a business entity.
+    attributes:
+      id:
+        identifier: true
+      business_entity:
+        range: BusinessEntity
+        required: true
+      site_address:
+      jurisdiction_path:
+        range: Jurisdiction
+        multivalued: true
+        description: Ordered nation to place. A set, never a scalar.
+      is_unincorporated:
+        range: boolean
+      employment_at_establishment:
+        range: integer
+      floor_area_sqft:
+        range: integer
+      opened_on:
+        range: date
+      closed_on:
+        range: date
+      activities:
+        range: Activity
+        multivalued: true
+        inlined_as_list: true
+      processes:
+        range: Process
+        multivalued: true
+        inlined_as_list: true
+      product_offerings:
+        range: ProductOffering
+        multivalued: true
+        inlined_as_list: true
+
+  Process:
+    description: >-
+      An activity unit beneath an establishment. Exists because chemical-process
+      regimes attach codes and quantity thresholds below the site level, and forbid
+      inheriting the site's primary code as a default.
+    attributes:
+      id:
+        identifier: true
+      establishment:
+        range: Establishment
+        required: true
+      name:
+      process_type:
+      is_covered_process:
+        range: boolean
+      chemical_holdings:
+        range: ChemicalHolding
+        multivalued: true
+        inlined_as_list: true
+      equipment:
+        range: EquipmentItem
+        multivalued: true
+        inlined_as_list: true
+
+  Activity:
+    description: A line of business carried on at an establishment.
+    attributes:
+      id:
+        identifier: true
+      establishment:
+        range: Establishment
+        required: true
+      description:
+        required: true
+      is_primary:
+        range: boolean
+        description: >-
+          Deliberately NOT uniquely constrained. Some programmes speak of "primary
+          industrial activity(ies)" in the plural, and an activity matching a narrative
+          category is primary regardless of its code.
+      primacy_basis:
+        description: receipts, headcount, production_rate, operator_designated, narrative_category
+      receipts_share:
+        range: decimal
+      primacy_justification_text:
+        description: >-
+          Receipts ordering is stored as advisory guidance with an operator-supplied
+          justification, never as an enforced rule.
+
+  ProductOffering:
+    description: >-
+      A product or service offered. A separate demand-based axis; not derivable from
+      the supply-based industry classification.
+    attributes:
+      id:
+        identifier: true
+      establishment:
+        range: Establishment
+      revenue_share:
+        range: decimal
+      is_regulated_substance:
+        range: boolean
+
+  ChemicalHolding:
+    description: A chemical held at a process. Data class is restricted.
+    attributes:
+      id:
+        identifier: true
+      process:
+        range: Process
+        required: true
+      cas_number:
+      max_quantity:
+        range: decimal
+      uom:
+      flashpoint_c:
+        range: decimal
+      hazard_category:
+      container_type:
+      source:
+        description: owner_declared, sds_parsed, or inspection.
+
+  EquipmentItem:
+    attributes:
+      id:
+        identifier: true
+      process:
+        range: Process
+      equipment_type:
+      design_capacity:
+        range: decimal
+      uom:
+
+# ---------------------------------------------------------------------------
+# The attribute registry -- the contract between intake, rules, and AI pre-fill
+# ---------------------------------------------------------------------------
+
+  AttributeDefinition:
+    description: >-
+      The registry entry for a fact the system may collect or a rule may test. A rule
+      referencing an unregistered attribute, or one at a scope that disagrees with this
+      entry, fails CI. This is what makes scope-confusion bugs unwriteable.
+    attributes:
+      uri:
+        identifier: true
+      label:
+        required: true
+      scope_unit:
+        range: ScopeUnit
+        required: true
+      datatype:
+        required: true
+      unit_dimension:
+      enum_ref:
+      collection_method:
+      data_class:
+        range: DataClass
+        required: true
+      llm_egress_allowed:
+        range: boolean
+        required: true
+
+  Fact:
+    description: >-
+      An open-world fact carrying the long tail of attributes that do not warrant a
+      typed column.
+    attributes:
+      id:
+        identifier: true
+      subject_ref:
+        required: true
+      subject_scope:
+        range: ScopeUnit
+        required: true
+      attribute:
+        range: AttributeDefinition
+        required: true
+      value_typed:
+        required: true
+      unit:
+      effective_from:
+        range: date
+      effective_to:
+        range: date
+      source:
+      confidence:
+        range: decimal
+
+# ---------------------------------------------------------------------------
+# Classification
+# ---------------------------------------------------------------------------
+
+  Scheme:
+    description: A classification scheme.
+    attributes:
+      id:
+        identifier: true
+      label:
+        required: true
+      publisher:
+      is_industry_scheme:
+        range: boolean
+        description: >-
+          False for code spaces that look like industry codes but are not, and must
+          never be crosswalked as though they were.
+
+  SchemeVersion:
+    description: A dated edition of a scheme. Vintage is part of concept identity.
+    attributes:
+      id:
+        identifier: true
+      scheme:
+        range: Scheme
+        required: true
+      vintage:
+        required: true
+      effective_from:
+        range: date
+      effective_to:
+        range: date
+
+  Concept:
+    description: >-
+      A single code within a scheme version. Identity is the triple
+      (scheme, vintage, code) -- never a bare code.
+    attributes:
+      id:
+        identifier: true
+        description: Synthetic key. The natural key is (scheme, vintage, code).
+      scheme_version:
+        range: SchemeVersion
+        required: true
+      code:
+        required: true
+      title:
+        required: true
+      definition_text:
+      level:
+        range: integer
+      parent_code:
+      revision_status:
+        range: RevisionStatus
+    unique_keys:
+      natural_key:
+        description: The real identity of a concept.
+        unique_key_slots:
+          - scheme_version
+          - code
+
+  Correspondence:
+    description: >-
+      A published crosswalk between two scheme versions, as an addressable and
+      versionable object rather than a lookup table.
+    exact_mappings:
+      - xkos:Correspondence
+    attributes:
+      id:
+        identifier: true
+      source_scheme_version:
+        range: SchemeVersion
+        required: true
+      target_scheme_version:
+        range: SchemeVersion
+        required: true
+      publisher:
+      published_on:
+        range: date
+      file_provenance:
+      coverage_notes:
+
+  ConceptMapping:
+    description: One row of a correspondence.
+    attributes:
+      id:
+        identifier: true
+      correspondence:
+        range: Correspondence
+        required: true
+      source_concept:
+        range: Concept
+      target_concept:
+        range: Concept
+      match_type:
+        range: MatchType
+        required: true
+      apportionment_ratio:
+        range: decimal
+        description: Local extension. XKOS 1.2 defines no such property.
+      match_strength:
+        range: decimal
+        description: Local extension.
+      asserted_by:
+
+  ClassificationAssignment:
+    description: >-
+      A candidate or confirmed code for a subject. Candidates are presented ranked for
+      human confirmation; only a confirmed assignment may be the code of record.
+    attributes:
+      id:
+        identifier: true
+      subject_ref:
+        required: true
+      subject_scope:
+        range: ScopeUnit
+        required: true
+      scheme_version:
+        range: SchemeVersion
+        required: true
+      code:
+        required: true
+      rank:
+        range: integer
+      score:
+        range: decimal
+      method:
+        range: AssignmentMethod
+        required: true
+      confirmation_state:
+        range: ConfirmationState
+        required: true
+      is_code_of_record:
+        range: boolean
+        required: true
+      alternatives_shown:
+        multivalued: true
+        description: >-
+          What the applicant was offered, not merely what they chose. Competent people
+          disagree on the same description; an appeal needs the offered set.
+      provenance:
+        range: ProvenanceRecord
+
+  CodeTranslation:
+    description: >-
+      The result of walking one or more correspondences. The hop path is retained so a
+      translation can be audited rather than trusted.
+    attributes:
+      id:
+        identifier: true
+      assignment:
+        range: ClassificationAssignment
+        required: true
+      target_scheme_version:
+        range: SchemeVersion
+        required: true
+      result_code:
+        multivalued: true
+      hop_path:
+        multivalued: true
+        description: Ordered correspondence identifiers.
+      match_type_chain:
+        range: MatchType
+        multivalued: true
+      is_composable:
+        range: boolean
+        description: True only when every hop is an exactMatch. Close-match chains never auto-compose.
+      review_required:
+        range: boolean
+
+  RollupRule:
+    description: >-
+      How a code at a wider scope derives from a narrower one, as data. Encoding this
+      as rows is what lets one regime forbid the roll-up that another requires.
+    attributes:
+      id:
+        identifier: true
+      target_scope:
+        range: ScopeUnit
+        required: true
+      source_scope:
+        range: ScopeUnit
+        required: true
+      method:
+        range: RollupMethod
+        required: true
+      authority_citation:
+        required: true
+      regime:
+        range: Regime
+      no_default_from_parent:
+        range: boolean
+
+# ---------------------------------------------------------------------------
+# Regulatory
+# ---------------------------------------------------------------------------
+
+  Jurisdiction:
+    attributes:
+      id:
+        identifier: true
+      level:
+        range: JurisdictionLevel
+        required: true
+      geoid:
+      label:
+        required: true
+      parent:
+        range: Jurisdiction
+      effective_from:
+        range: date
+      effective_to:
+        range: date
+
+  JurisdictionProfile:
+    description: >-
+      A jurisdiction expressed as an inclusion set with exceptions, because
+      "everywhere except one state" is a common real pattern that a flat column cannot
+      represent.
+    exact_mappings:
+      - ceterms:JurisdictionProfile
+    attributes:
+      id:
+        identifier: true
+      main_jurisdiction:
+        range: Jurisdiction
+        multivalued: true
+      jurisdiction_exception:
+        range: Jurisdiction
+        multivalued: true
+      global_flag:
+        range: boolean
+      residency_required:
+        range: boolean
+
+  Authority:
+    description: An agency that issues credentials or administers obligations.
+    attributes:
+      id:
+        identifier: true
+      label:
+        required: true
+      jurisdiction:
+        range: Jurisdiction
+
+  LegalSource:
+    description: >-
+      A retrieved, hashed, point-in-time snapshot of authoritative text. Every
+      obligation traces to one of these.
+    attributes:
+      id:
+        identifier: true
+      citation:
+        required: true
+      source_url:
+        required: true
+      source_system:
+      text_hash:
+      retrieved_at:
+        range: datetime
+      as_of_date:
+        range: date
+      amendment_date:
+        range: date
+
+  Regime:
+    description: A regulatory programme that generates obligations.
+    attributes:
+      id:
+        identifier: true
+      label:
+        required: true
+      scope_unit:
+        range: ScopeUnit
+        required: true
+      authority:
+        range: Authority
+
+  Obligation:
+    attributes:
+      id:
+        identifier: true
+      regime:
+        range: Regime
+        required: true
+      obligation_type:
+        required: true
+      scope_unit:
+        range: ScopeUnit
+        required: true
+      trigger_rule_id:
+        required: true
+      legal_source:
+        range: LegalSource
+        required: true
+      deadline_rule:
+      recurrence:
+      non_waivable:
+        range: boolean
+        description: >-
+          Survives every exemption in its regime. A non-waivable obligation is surfaced
+          even when the applicant is otherwise exempt.
+
+  Determination:
+    description: >-
+      A reproducible answer. Pinning the rule version, the law date, and a hash of the
+      inputs is what lets the system answer "why did it say that in March".
+    attributes:
+      id:
+        identifier: true
+      subject_ref:
+        required: true
+      subject_scope:
+        range: ScopeUnit
+        required: true
+      obligation:
+        range: Obligation
+        required: true
+      result:
+        range: TruthValue
+        required: true
+      classification_assignment:
+        range: ClassificationAssignment
+        description: >-
+          MUST reference an assignment whose confirmation_state is not `unconfirmed`.
+          Enforced by a database CHECK constraint, not by application code.
+      rule_version_id:
+        required: true
+      engine_version:
+        required: true
+      as_of_law:
+        range: date
+        required: true
+      input_snapshot_hash:
+        required: true
+      missing_attributes:
+        range: AttributeDefinition
+        multivalued: true
+        description: What must be answered next when the result is indeterminate.
+      evidence_tree:
+        description: The predicate tree annotated with truth values and citations.
+      determined_at:
+        range: datetime
+
+  ProvenanceRecord:
+    description: >-
+      What produced a surfaced item. No obligation is displayed without one.
+    attributes:
+      id:
+        identifier: true
+      model_id:
+      prompt_version:
+      index_version:
+      rank_at_selection:
+        range: integer
+      confirmed_by:
+      confirmed_at:
+        range: datetime
+      ui_version:
+
+# ---------------------------------------------------------------------------
+# Credentials -- a CTDL application profile
+# ---------------------------------------------------------------------------
+
+  Credential:
+    description: A licence, certification, registration, or permit.
+    attributes:
+      id:
+        identifier: true
+      credential_type:
+        range: CredentialType
+        required: true
+      label:
+        required: true
+      issuing_authority:
+        range: Authority
+        required: true
+      jurisdiction_profile:
+        range: JurisdictionProfile
+      industry_codes:
+        multivalued: true
+        description: >-
+          Adopted from CTDL, which types this as an untyped string with no vintage
+          validation, so codes from different revisions are indistinguishable.
+      industry_code_vintage:
+        description: Local extension supplying the vintage CTDL omits.
+      legal_source:
+        range: LegalSource
+      estimated_cost:
+        range: decimal
+      renewal_period_months:
+        range: integer
+
+  Requirement:
+    description: >-
+      A reified condition between a credential and what it demands. A table rather than
+      a foreign key, because the edge carries jurisdiction, residency, experience, cost,
+      and dates. Recursive: AND groups contain OR alternative sets contain further
+      groups, which is what real licensing paths need.
+    exact_mappings:
+      - ceterms:ConditionProfile
+    attributes:
+      id:
+        identifier: true
+      credential:
+        range: Credential
+        required: true
+      parent:
+        range: Requirement
+      node_type:
+        range: NodeType
+        required: true
+      edge_kind:
+        description: prerequisite, concurrent, conditional-on, or renewal.
+      jurisdiction_profile:
+        range: JurisdictionProfile
+      residency_required:
+        range: boolean
+      min_age:
+        range: integer
+      years_experience:
+        range: decimal
+      estimated_cost:
+        range: decimal
+      effective_from:
+        range: date
+      effective_to:
+        range: date
+      legal_source:
+        range: LegalSource
+        required: true
+      target_credential:
+        range: Credential
+      target_predicate:
+        description: >-
+          A predicate from the rules DSL. This is the seam that unifies the regulatory
+          and credential halves of the system into a single evaluator.
+
+  CredentialDependencyEdge:
+    description: >-
+      A derived, typed edge used for topological ordering. Cycles are a transcription
+      error in the source law and fail CI; they are not a runtime condition to handle.
+    attributes:
+      id:
+        identifier: true
+      from_credential:
+        range: Credential
+        required: true
+      to_credential:
+        range: Credential
+        required: true
+      edge_kind:
+        required: true
+      derived_from_requirement:
+        range: Requirement

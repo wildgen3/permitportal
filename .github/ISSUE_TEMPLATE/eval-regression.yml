@@ -1,0 +1,38 @@
+name: Eval regression
+description: A quality metric moved.
+title: "eval: "
+labels: ["type:eval"]
+body:
+  - type: input
+    id: metric
+    attributes:
+      label: Metric
+      description: e.g. recall@5 (6-digit, Wholesale Trade)
+    validations:
+      required: true
+  - type: input
+    id: baseline
+    attributes:
+      label: Committed baseline value
+    validations:
+      required: true
+  - type: input
+    id: observed
+    attributes:
+      label: Observed value
+    validations:
+      required: true
+  - type: input
+    id: run
+    attributes:
+      label: Harness run link
+    validations:
+      required: true
+  - type: dropdown
+    id: false_negatives
+    attributes:
+      label: Did false negatives on must-apply fixtures change?
+      description: This is the gated metric. Anything other than zero is a release blocker.
+      options: ["no", "yes — increased", "yes — decreased", "not measured"]
+    validations:
+      required: true

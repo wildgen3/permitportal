@@ -1,0 +1,56 @@
+name: Rule gap
+description: An obligation or credential the ruleset does not model.
+title: "rule: "
+labels: ["type:rules-data"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Every rule needs a public source.** An uncited rule cannot be merged, so it
+        cannot be filed either.
+  - type: input
+    id: source_url
+    attributes:
+      label: Source URL
+      description: Public authority for this obligation. Required.
+    validations:
+      required: true
+  - type: input
+    id: citation
+    attributes:
+      label: Citation
+      description: Structured citation, e.g. "29 CFR 1904.1(b)(1)". Check the level — part and chapter differ.
+    validations:
+      required: true
+  - type: input
+    id: jurisdiction
+    attributes:
+      label: Jurisdiction
+      description: Nation, state, county, or place.
+    validations:
+      required: true
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope unit
+      description: Which unit of analysis does this rule test? Getting this wrong is the most common bug in the domain.
+      options: [business, establishment, process, activity, "not sure"]
+    validations:
+      required: true
+  - type: dropdown
+    id: list_semantics
+    attributes:
+      label: If it cites a code list — is the list exhaustive?
+      options:
+        - "enumerative_closed — the list is exhaustive"
+        - "illustrative_open — the list gives examples"
+        - "no code list involved"
+        - "not sure"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What is missing
+    validations:
+      required: true

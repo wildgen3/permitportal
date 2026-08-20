@@ -1,0 +1,17 @@
+# Code list: statutory exemptions from the Washington electrical contractor
+# registration requirement. Specification fixture; representative subset.
+id: lists/rcw_19_28_exemptions
+label: RCW 19.28 electrical contractor exemptions
+scheme: ACTIVITY
+list_vintage: "current"
+list_semantics: enumerative_closed
+is_complete: false
+edition: "2026-08-19"
+source_url: https://app.leg.wa.gov/rcw/default.aspx?cite=19.28
+citation: RCW 19.28.091
+retrieved_at: "2026-08-19"
+codes:
+  - code: owner_occupied_single_family
+    title: Owner performing work on their own single-family residence
+  - code: employee_of_registered_contractor
+    title: Employee working under a registered contractor

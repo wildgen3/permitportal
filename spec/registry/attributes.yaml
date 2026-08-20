@@ -1,0 +1,147 @@
+# Attribute registry.
+#
+# The contract between intake forms, rule predicates, and model pre-fill. A rule
+# referencing an unregistered attribute, or one whose declared scope disagrees with
+# the entry here, fails CI (linter L-04).
+#
+# `scope_unit` is the load-bearing field. Regulations key to different units of
+# analysis, and conflating them produces wrong determinations in both directions.
+version: 1
+attributes:
+
+  # --- company scope -------------------------------------------------------
+  - uri: company.peak_employment_prior_cy
+    label: Peak employment across the entire company, prior calendar year
+    scope_unit: business
+    datatype: integer
+    collection_method: intake_form
+    data_class: business_confidential
+    llm_egress_allowed: false
+    note: >-
+      COMPANY scope, deliberately. Size-based recordkeeping exemptions count every
+      employee of the entity, not the employees at the site being assessed.
+
+  - uri: company.annual_receipts
+    label: Company annual receipts
+    scope_unit: business
+    datatype: decimal
+    collection_method: intake_form
+    data_class: business_confidential
+    llm_egress_allowed: false
+
+  # --- establishment scope -------------------------------------------------
+  - uri: establishment.classification
+    label: Industry classification of record for the establishment
+    scope_unit: establishment
+    datatype: classification_ref
+    collection_method: derived_confirmed
+    data_class: public
+    llm_egress_allowed: true
+
+  - uri: establishment.jurisdiction_path
+    label: Ordered jurisdiction path, nation through place
+    scope_unit: establishment
+    datatype: jurisdiction_ref_list
+    collection_method: geocode
+    data_class: public
+    llm_egress_allowed: true
+
+  - uri: establishment.employment
+    label: Employment at this establishment
+    scope_unit: establishment
+    datatype: integer
+    collection_method: intake_form
+    data_class: business_confidential
+    llm_egress_allowed: false
+
+  - uri: establishment.osha_bls_state_written_exemption_override
+    label: State plan has issued a written override of the federal partial exemption
+    scope_unit: establishment
+    datatype: boolean
+    collection_method: jurisdiction_rule
+    data_class: public
+    llm_egress_allowed: true
+
+  - uri: establishment.is_retail_facility
+    label: Establishment is a retail facility
+    scope_unit: establishment
+    datatype: boolean
+    collection_method: intake_form
+    data_class: public
+    llm_egress_allowed: true
+
+  - uri: establishment.is_normally_unoccupied_remote
+    label: Normally unoccupied remote facility
+    scope_unit: establishment
+    datatype: boolean
+    collection_method: intake_form
+    data_class: public
+    llm_egress_allowed: true
+
+  - uri: establishment.activities
+    label: Activity types carried on at the establishment
+    scope_unit: establishment
+    datatype: activity_ref_list
+    collection_method: intake_form
+    data_class: public
+    llm_egress_allowed: true
+
+  - uri: establishment.exemption_claims
+    label: Exemptions the operator claims
+    scope_unit: establishment
+    datatype: string_list
+    collection_method: intake_form
+    data_class: public
+    llm_egress_allowed: true
+
+  # --- process scope -------------------------------------------------------
+  - uri: process.classification
+    label: Industry classification attached to the process
+    scope_unit: process
+    datatype: classification_ref
+    collection_method: derived_confirmed
+    data_class: public
+    llm_egress_allowed: true
+
+  - uri: process.is_covered_process
+    label: Process meets the programme definition of a covered process
+    scope_unit: process
+    datatype: boolean
+    collection_method: derived
+    data_class: public
+    llm_egress_allowed: true
+
+  - uri: process.is_oil_gas_well_drilling_or_servicing
+    label: Oil or gas well drilling or servicing operation
+    scope_unit: process
+    datatype: boolean
+    collection_method: intake_form
+    data_class: public
+    llm_egress_allowed: true
+
+  - uri: process.chemical_holdings.cas
+    label: CAS numbers of chemicals held at the process
+    scope_unit: process
+    datatype: string_list
+    collection_method: intake_form
+    data_class: restricted
+    llm_egress_allowed: false
+    note: >-
+      Restricted. Chemical inventory is security-sensitive; it is never transmitted to
+      a third-party model provider or analytics endpoint.
+
+  - uri: process.chemical_holdings.max_quantity
+    label: Maximum quantity of each chemical held
+    scope_unit: process
+    datatype: quantity_list
+    collection_method: intake_form
+    data_class: restricted
+    llm_egress_allowed: false
+
+  - uri: process.chemical_holdings.hazard_category
+    label: Hazard categories of chemicals held
+    scope_unit: process
+    datatype: string_list
+    collection_method: intake_form
+    data_class: restricted
+    llm_egress_allowed: false

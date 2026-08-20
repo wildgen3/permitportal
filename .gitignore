@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+.venv/
+__pycache__/
+*.egg-info/
+
+# Build output
+.next/
+dist/
+*.tsbuildinfo
+site/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!example.tfvars
+
+# Local secrets and environment
+.env
+.env.*
+!.env.example
+
+# Caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.cache/
+
+# Local-only clean-room denylist (never committed; see docs/clean-room.md)
+denylist.txt
+
+# Editor / OS
+.DS_Store
+*.swp
+AGENTS.local.md

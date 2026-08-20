@@ -1,0 +1,34 @@
+name: contracts
+
+on:
+  pull_request:
+    paths: ['spec/model/**', 'spec/generated/**', 'spec/api/**', 'packages/**']
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: contracts-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+
+      - name: Install LinkML
+        run: python3 -m pip install --disable-pip-version-check 'linkml==1.11.*'
+
+      - name: Regenerate and assert no drift
+        # Generated artifacts are committed so they render on the repository host, and
+        # diff-gated so they can never drift from the model. Regenerate; never hand-edit.
+        run: |
+          ./do spec
+          git diff --exit-code spec/generated \
+            || { echo "::error::spec/generated is stale. Run ./do spec and commit."; exit 1; }

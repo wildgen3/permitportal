@@ -1,0 +1,36 @@
+# Code list: the NAICS codes that place a covered process in RMP Program 3.
+#
+# Specification fixture; representative subset. The published list is short and
+# closed, which is why this rule can return FALSE on the code leg where the OSHA
+# recordkeeping rule cannot.
+id: lists/rmp_program3_naics
+label: RMP Program 3 NAICS codes
+scheme: NAICS
+list_vintage: "2007"
+list_semantics: enumerative_closed
+is_complete: false
+edition: "1996"
+source_url: https://www.ecfr.gov/current/title-40/chapter-I/subchapter-C/part-68
+citation: 40 CFR 68.10
+retrieved_at: "2026-08-19"
+codes:
+  - code: "32211"
+    title: Pulp Mills
+  - code: "32411"
+    title: Petroleum Refineries
+  - code: "32511"
+    title: Petrochemical Manufacturing
+  - code: "325181"
+    title: Alkalies and Chlorine Manufacturing
+    revision_status: retired
+    successor_code: "325180"
+    successor_vintage: "2012"
+  - code: "325188"
+    title: All Other Basic Inorganic Chemical Manufacturing
+    revision_status: retired
+    successor_code: "325180"
+    successor_vintage: "2012"
+  - code: "325211"
+    title: Plastics Material and Resin Manufacturing
+  - code: "32532"
+    title: Pesticide and Other Agricultural Chemical Manufacturing

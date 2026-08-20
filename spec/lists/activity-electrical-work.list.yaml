@@ -1,0 +1,18 @@
+# Controlled vocabulary: activity types constituting electrical work.
+id: vocab/activity/electrical_work
+label: Electrical work activity types
+scheme: ACTIVITY
+list_vintage: "current"
+list_semantics: enumerative_closed
+is_complete: true
+edition: "2026-08-19"
+source_url: https://app.leg.wa.gov/rcw/default.aspx?cite=19.28
+citation: RCW 19.28.006
+retrieved_at: "2026-08-19"
+codes:
+  - code: electrical_installation
+    title: Installation of electrical wiring or equipment
+  - code: electrical_maintenance
+    title: Maintenance or repair of electrical wiring or equipment
+  - code: electrical_alteration
+    title: Alteration of existing electrical systems

@@ -1,0 +1,1626 @@
+{
+    "$defs": {
+        "Activity": {
+            "additionalProperties": false,
+            "description": "A line of business carried on at an establishment.",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "establishment": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "is_primary": {
+                    "description": "Deliberately NOT uniquely constrained. Some programmes speak of \"primary industrial activity(ies)\" in the plural, and an activity matching a narrative category is primary regardless of its code.",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "primacy_basis": {
+                    "description": "receipts, headcount, production_rate, operator_designated, narrative_category",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "primacy_justification_text": {
+                    "description": "Receipts ordering is stored as advisory guidance with an operator-supplied justification, never as an enforced rule.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "receipts_share": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "establishment",
+                "description"
+            ],
+            "title": "Activity",
+            "type": "object"
+        },
+        "AssignmentMethod": {
+            "description": "How a candidate code came to be proposed or set.",
+            "enum": [
+                "llm_candidate",
+                "embedding_retrieval",
+                "owner_selected",
+                "agency_assigned",
+                "derived_rollup",
+                "crosswalk_translated"
+            ],
+            "title": "AssignmentMethod",
+            "type": "string"
+        },
+        "AttributeDefinition": {
+            "additionalProperties": false,
+            "description": "The registry entry for a fact the system may collect or a rule may test. A rule referencing an unregistered attribute, or one at a scope that disagrees with this entry, fails CI. This is what makes scope-confusion bugs unwriteable.",
+            "properties": {
+                "collection_method": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "data_class": {
+                    "$ref": "#/$defs/DataClass"
+                },
+                "datatype": {
+                    "type": "string"
+                },
+                "enum_ref": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "label": {
+                    "type": "string"
+                },
+                "llm_egress_allowed": {
+                    "type": "boolean"
+                },
+                "scope_unit": {
+                    "$ref": "#/$defs/ScopeUnit"
+                },
+                "unit_dimension": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "uri": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "uri",
+                "label",
+                "scope_unit",
+                "datatype",
+                "data_class",
+                "llm_egress_allowed"
+            ],
+            "title": "AttributeDefinition",
+            "type": "object"
+        },
+        "Authority": {
+            "additionalProperties": false,
+            "description": "An agency that issues credentials or administers obligations.",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "jurisdiction": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "label": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "label"
+            ],
+            "title": "Authority",
+            "type": "object"
+        },
+        "BusinessEntity": {
+            "additionalProperties": false,
+            "description": "A legal entity. The company scope.",
+            "properties": {
+                "affiliation_group_id": {
+                    "description": "Affiliate grouping, which size standards aggregate across.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "company_annual_receipts": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "company_peak_employment_prior_cy": {
+                    "description": "Peak employment across the ENTIRE company in the prior calendar year. Deliberately named with a company scope, because size-based exemptions are company-wide while industry-based exemptions are per-site.",
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "entity_form": {
+                    "description": "LLC, corporation, sole proprietorship, partnership.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "establishments": {
+                    "items": {
+                        "$ref": "#/$defs/Establishment"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "formation_date": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "formation_jurisdiction": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "legal_name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "legal_name"
+            ],
+            "title": "BusinessEntity",
+            "type": "object"
+        },
+        "ChemicalHolding": {
+            "additionalProperties": false,
+            "description": "A chemical held at a process. Data class is restricted.",
+            "properties": {
+                "cas_number": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "container_type": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "flashpoint_c": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "hazard_category": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "max_quantity": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "process": {
+                    "type": "string"
+                },
+                "source": {
+                    "description": "owner_declared, sds_parsed, or inspection.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "uom": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "process"
+            ],
+            "title": "ChemicalHolding",
+            "type": "object"
+        },
+        "ClassificationAssignment": {
+            "additionalProperties": false,
+            "description": "A candidate or confirmed code for a subject. Candidates are presented ranked for human confirmation; only a confirmed assignment may be the code of record.",
+            "properties": {
+                "alternatives_shown": {
+                    "description": "What the applicant was offered, not merely what they chose. Competent people disagree on the same description; an appeal needs the offered set.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "code": {
+                    "type": "string"
+                },
+                "confirmation_state": {
+                    "$ref": "#/$defs/ConfirmationState"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "is_code_of_record": {
+                    "type": "boolean"
+                },
+                "method": {
+                    "$ref": "#/$defs/AssignmentMethod"
+                },
+                "provenance": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "rank": {
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "scheme_version": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "subject_ref": {
+                    "type": "string"
+                },
+                "subject_scope": {
+                    "$ref": "#/$defs/ScopeUnit"
+                }
+            },
+            "required": [
+                "id",
+                "subject_ref",
+                "subject_scope",
+                "scheme_version",
+                "code",
+                "method",
+                "confirmation_state",
+                "is_code_of_record"
+            ],
+            "title": "ClassificationAssignment",
+            "type": "object"
+        },
+        "CodeTranslation": {
+            "additionalProperties": false,
+            "description": "The result of walking one or more correspondences. The hop path is retained so a translation can be audited rather than trusted.",
+            "properties": {
+                "assignment": {
+                    "type": "string"
+                },
+                "hop_path": {
+                    "description": "Ordered correspondence identifiers.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "is_composable": {
+                    "description": "True only when every hop is an exactMatch. Close-match chains never auto-compose.",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "match_type_chain": {
+                    "items": {
+                        "$ref": "#/$defs/MatchType"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "result_code": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "review_required": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "target_scheme_version": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "assignment",
+                "target_scheme_version"
+            ],
+            "title": "CodeTranslation",
+            "type": "object"
+        },
+        "Concept": {
+            "additionalProperties": false,
+            "description": "A single code within a scheme version. Identity is the triple (scheme, vintage, code) -- never a bare code.",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "definition_text": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "Synthetic key. The natural key is (scheme, vintage, code).",
+                    "type": "string"
+                },
+                "level": {
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "parent_code": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "revision_status": {
+                    "$ref": "#/$defs/RevisionStatus"
+                },
+                "scheme_version": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "scheme_version",
+                "code",
+                "title"
+            ],
+            "title": "Concept",
+            "type": "object"
+        },
+        "ConceptMapping": {
+            "additionalProperties": false,
+            "description": "One row of a correspondence.",
+            "properties": {
+                "apportionment_ratio": {
+                    "description": "Local extension. XKOS 1.2 defines no such property.",
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "asserted_by": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "correspondence": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "match_strength": {
+                    "description": "Local extension.",
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "match_type": {
+                    "$ref": "#/$defs/MatchType"
+                },
+                "source_concept": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "target_concept": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "correspondence",
+                "match_type"
+            ],
+            "title": "ConceptMapping",
+            "type": "object"
+        },
+        "ConfirmationState": {
+            "description": "Whether a classification has been affirmed by a person. Only a non-unconfirmed assignment may be referenced by a determination.",
+            "enum": [
+                "unconfirmed",
+                "owner_confirmed",
+                "staff_confirmed",
+                "agency_assigned"
+            ],
+            "title": "ConfirmationState",
+            "type": "string"
+        },
+        "Correspondence": {
+            "additionalProperties": false,
+            "description": "A published crosswalk between two scheme versions, as an addressable and versionable object rather than a lookup table.",
+            "properties": {
+                "coverage_notes": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "file_provenance": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "published_on": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "publisher": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source_scheme_version": {
+                    "type": "string"
+                },
+                "target_scheme_version": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "source_scheme_version",
+                "target_scheme_version"
+            ],
+            "title": "Correspondence",
+            "type": "object"
+        },
+        "Credential": {
+            "additionalProperties": false,
+            "description": "A licence, certification, registration, or permit.",
+            "properties": {
+                "credential_type": {
+                    "$ref": "#/$defs/CredentialType"
+                },
+                "estimated_cost": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "industry_code_vintage": {
+                    "description": "Local extension supplying the vintage CTDL omits.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "industry_codes": {
+                    "description": "Adopted from CTDL, which types this as an untyped string with no vintage validation, so codes from different revisions are indistinguishable.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "issuing_authority": {
+                    "type": "string"
+                },
+                "jurisdiction_profile": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "label": {
+                    "type": "string"
+                },
+                "legal_source": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "renewal_period_months": {
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "credential_type",
+                "label",
+                "issuing_authority"
+            ],
+            "title": "Credential",
+            "type": "object"
+        },
+        "CredentialDependencyEdge": {
+            "additionalProperties": false,
+            "description": "A derived, typed edge used for topological ordering. Cycles are a transcription error in the source law and fail CI; they are not a runtime condition to handle.",
+            "properties": {
+                "derived_from_requirement": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "edge_kind": {
+                    "type": "string"
+                },
+                "from_credential": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "to_credential": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "from_credential",
+                "to_credential",
+                "edge_kind"
+            ],
+            "title": "CredentialDependencyEdge",
+            "type": "object"
+        },
+        "CredentialType": {
+            "description": "",
+            "enum": [
+                "license",
+                "certification",
+                "registration",
+                "permit"
+            ],
+            "title": "CredentialType",
+            "type": "string"
+        },
+        "DataClass": {
+            "description": "Disclosure sensitivity, which governs storage and model egress.",
+            "enum": [
+                "public",
+                "business_confidential",
+                "restricted"
+            ],
+            "title": "DataClass",
+            "type": "string"
+        },
+        "Determination": {
+            "additionalProperties": false,
+            "description": "A reproducible answer. Pinning the rule version, the law date, and a hash of the inputs is what lets the system answer \"why did it say that in March\".",
+            "properties": {
+                "as_of_law": {
+                    "format": "date",
+                    "type": "string"
+                },
+                "classification_assignment": {
+                    "description": "MUST reference an assignment whose confirmation_state is not `unconfirmed`. Enforced by a database CHECK constraint, not by application code.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "determined_at": {
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "engine_version": {
+                    "type": "string"
+                },
+                "evidence_tree": {
+                    "description": "The predicate tree annotated with truth values and citations.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "input_snapshot_hash": {
+                    "type": "string"
+                },
+                "missing_attributes": {
+                    "description": "What must be answered next when the result is indeterminate.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "obligation": {
+                    "type": "string"
+                },
+                "result": {
+                    "$ref": "#/$defs/TruthValue"
+                },
+                "rule_version_id": {
+                    "type": "string"
+                },
+                "subject_ref": {
+                    "type": "string"
+                },
+                "subject_scope": {
+                    "$ref": "#/$defs/ScopeUnit"
+                }
+            },
+            "required": [
+                "id",
+                "subject_ref",
+                "subject_scope",
+                "obligation",
+                "result",
+                "rule_version_id",
+                "engine_version",
+                "as_of_law",
+                "input_snapshot_hash"
+            ],
+            "title": "Determination",
+            "type": "object"
+        },
+        "EquipmentItem": {
+            "additionalProperties": false,
+            "description": "",
+            "properties": {
+                "design_capacity": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "equipment_type": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "process": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "uom": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "EquipmentItem",
+            "type": "object"
+        },
+        "Establishment": {
+            "additionalProperties": false,
+            "description": "A single physical site operated by a business entity.",
+            "properties": {
+                "activities": {
+                    "items": {
+                        "$ref": "#/$defs/Activity"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "business_entity": {
+                    "type": "string"
+                },
+                "closed_on": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "employment_at_establishment": {
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "floor_area_sqft": {
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "is_unincorporated": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "jurisdiction_path": {
+                    "description": "Ordered nation to place. A set, never a scalar.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "opened_on": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "processes": {
+                    "items": {
+                        "$ref": "#/$defs/Process"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "product_offerings": {
+                    "items": {
+                        "$ref": "#/$defs/ProductOffering"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "site_address": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "business_entity"
+            ],
+            "title": "Establishment",
+            "type": "object"
+        },
+        "Fact": {
+            "additionalProperties": false,
+            "description": "An open-world fact carrying the long tail of attributes that do not warrant a typed column.",
+            "properties": {
+                "attribute": {
+                    "type": "string"
+                },
+                "confidence": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "effective_from": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "effective_to": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "source": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "subject_ref": {
+                    "type": "string"
+                },
+                "subject_scope": {
+                    "$ref": "#/$defs/ScopeUnit"
+                },
+                "unit": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "value_typed": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "subject_ref",
+                "subject_scope",
+                "attribute",
+                "value_typed"
+            ],
+            "title": "Fact",
+            "type": "object"
+        },
+        "Jurisdiction": {
+            "additionalProperties": false,
+            "description": "",
+            "properties": {
+                "effective_from": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "effective_to": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "geoid": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "level": {
+                    "$ref": "#/$defs/JurisdictionLevel"
+                },
+                "parent": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "level",
+                "label"
+            ],
+            "title": "Jurisdiction",
+            "type": "object"
+        },
+        "JurisdictionLevel": {
+            "description": "",
+            "enum": [
+                "nation",
+                "state",
+                "county",
+                "place"
+            ],
+            "title": "JurisdictionLevel",
+            "type": "string"
+        },
+        "JurisdictionProfile": {
+            "additionalProperties": false,
+            "description": "A jurisdiction expressed as an inclusion set with exceptions, because \"everywhere except one state\" is a common real pattern that a flat column cannot represent.",
+            "properties": {
+                "global_flag": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "jurisdiction_exception": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "main_jurisdiction": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "residency_required": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "JurisdictionProfile",
+            "type": "object"
+        },
+        "LegalSource": {
+            "additionalProperties": false,
+            "description": "A retrieved, hashed, point-in-time snapshot of authoritative text. Every obligation traces to one of these.",
+            "properties": {
+                "amendment_date": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "as_of_date": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "citation": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "retrieved_at": {
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source_system": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source_url": {
+                    "type": "string"
+                },
+                "text_hash": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "citation",
+                "source_url"
+            ],
+            "title": "LegalSource",
+            "type": "object"
+        },
+        "ListSemantics": {
+            "description": "Whether a code list is exhaustive. The single most consequential distinction in the model: a hit on either kind proves inclusion, but only a closed list can prove exclusion.",
+            "enum": [
+                "enumerative_closed",
+                "illustrative_open"
+            ],
+            "title": "ListSemantics",
+            "type": "string"
+        },
+        "MatchType": {
+            "description": "SKOS mapping relation between two concepts.",
+            "enum": [
+                "exactMatch",
+                "closeMatch",
+                "broadMatch",
+                "narrowMatch",
+                "relatedMatch"
+            ],
+            "title": "MatchType",
+            "type": "string"
+        },
+        "NodeType": {
+            "description": "Boolean structure of a requirement or predicate tree node.",
+            "enum": [
+                "AND_GROUP",
+                "OR_GROUP",
+                "LEAF"
+            ],
+            "title": "NodeType",
+            "type": "string"
+        },
+        "Obligation": {
+            "additionalProperties": false,
+            "description": "",
+            "properties": {
+                "deadline_rule": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "legal_source": {
+                    "type": "string"
+                },
+                "non_waivable": {
+                    "description": "Survives every exemption in its regime. A non-waivable obligation is surfaced even when the applicant is otherwise exempt.",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "obligation_type": {
+                    "type": "string"
+                },
+                "recurrence": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "regime": {
+                    "type": "string"
+                },
+                "scope_unit": {
+                    "$ref": "#/$defs/ScopeUnit"
+                },
+                "trigger_rule_id": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "regime",
+                "obligation_type",
+                "scope_unit",
+                "trigger_rule_id",
+                "legal_source"
+            ],
+            "title": "Obligation",
+            "type": "object"
+        },
+        "Process": {
+            "additionalProperties": false,
+            "description": "An activity unit beneath an establishment. Exists because chemical-process regimes attach codes and quantity thresholds below the site level, and forbid inheriting the site's primary code as a default.",
+            "properties": {
+                "chemical_holdings": {
+                    "items": {
+                        "$ref": "#/$defs/ChemicalHolding"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "equipment": {
+                    "items": {
+                        "$ref": "#/$defs/EquipmentItem"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "establishment": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "is_covered_process": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "name": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "process_type": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "establishment"
+            ],
+            "title": "Process",
+            "type": "object"
+        },
+        "ProductOffering": {
+            "additionalProperties": false,
+            "description": "A product or service offered. A separate demand-based axis; not derivable from the supply-based industry classification.",
+            "properties": {
+                "establishment": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "is_regulated_substance": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "revenue_share": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "ProductOffering",
+            "type": "object"
+        },
+        "ProvenanceRecord": {
+            "additionalProperties": false,
+            "description": "What produced a surfaced item. No obligation is displayed without one.",
+            "properties": {
+                "confirmed_at": {
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "confirmed_by": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "index_version": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "model_id": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "prompt_version": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "rank_at_selection": {
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "ui_version": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "ProvenanceRecord",
+            "type": "object"
+        },
+        "Regime": {
+            "additionalProperties": false,
+            "description": "A regulatory programme that generates obligations.",
+            "properties": {
+                "authority": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "scope_unit": {
+                    "$ref": "#/$defs/ScopeUnit"
+                }
+            },
+            "required": [
+                "id",
+                "label",
+                "scope_unit"
+            ],
+            "title": "Regime",
+            "type": "object"
+        },
+        "Requirement": {
+            "additionalProperties": false,
+            "description": "A reified condition between a credential and what it demands. A table rather than a foreign key, because the edge carries jurisdiction, residency, experience, cost, and dates. Recursive: AND groups contain OR alternative sets contain further groups, which is what real licensing paths need.",
+            "properties": {
+                "credential": {
+                    "type": "string"
+                },
+                "edge_kind": {
+                    "description": "prerequisite, concurrent, conditional-on, or renewal.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "effective_from": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "effective_to": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "estimated_cost": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "jurisdiction_profile": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "legal_source": {
+                    "type": "string"
+                },
+                "min_age": {
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "node_type": {
+                    "$ref": "#/$defs/NodeType"
+                },
+                "parent": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "residency_required": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "target_credential": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "target_predicate": {
+                    "description": "A predicate from the rules DSL. This is the seam that unifies the regulatory and credential halves of the system into a single evaluator.",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "years_experience": {
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "credential",
+                "node_type",
+                "legal_source"
+            ],
+            "title": "Requirement",
+            "type": "object"
+        },
+        "RevisionStatus": {
+            "description": "A concept's fate across scheme revisions. `reused` is the dangerous one: the same code string carrying a different concept in a later vintage.",
+            "enum": [
+                "new",
+                "revised",
+                "reused",
+                "retired",
+                "unchanged"
+            ],
+            "title": "RevisionStatus",
+            "type": "string"
+        },
+        "RollupMethod": {
+            "description": "How a code at one scope is derived from codes at a narrower scope.",
+            "enum": [
+                "largest_receipts",
+                "largest_payroll",
+                "operator_designated",
+                "union_all",
+                "none"
+            ],
+            "title": "RollupMethod",
+            "type": "string"
+        },
+        "RollupRule": {
+            "additionalProperties": false,
+            "description": "How a code at a wider scope derives from a narrower one, as data. Encoding this as rows is what lets one regime forbid the roll-up that another requires.",
+            "properties": {
+                "authority_citation": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "method": {
+                    "$ref": "#/$defs/RollupMethod"
+                },
+                "no_default_from_parent": {
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "regime": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source_scope": {
+                    "$ref": "#/$defs/ScopeUnit"
+                },
+                "target_scope": {
+                    "$ref": "#/$defs/ScopeUnit"
+                }
+            },
+            "required": [
+                "id",
+                "target_scope",
+                "source_scope",
+                "method",
+                "authority_citation"
+            ],
+            "title": "RollupRule",
+            "type": "object"
+        },
+        "Scheme": {
+            "additionalProperties": false,
+            "description": "A classification scheme.",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "is_industry_scheme": {
+                    "description": "False for code spaces that look like industry codes but are not, and must never be crosswalked as though they were.",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "label": {
+                    "type": "string"
+                },
+                "publisher": {
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "id",
+                "label"
+            ],
+            "title": "Scheme",
+            "type": "object"
+        },
+        "SchemeVersion": {
+            "additionalProperties": false,
+            "description": "A dated edition of a scheme. Vintage is part of concept identity.",
+            "properties": {
+                "effective_from": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "effective_to": {
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "type": "string"
+                },
+                "scheme": {
+                    "type": "string"
+                },
+                "vintage": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "scheme",
+                "vintage"
+            ],
+            "title": "SchemeVersion",
+            "type": "object"
+        },
+        "ScopeUnit": {
+            "description": "The unit of analysis a fact, predicate, or obligation attaches to. Declared explicitly on every attribute and every predicate, because regulations key to different units and conflating them produces wrong determinations in both directions.",
+            "enum": [
+                "business",
+                "establishment",
+                "process",
+                "activity"
+            ],
+            "title": "ScopeUnit",
+            "type": "string"
+        },
+        "TruthValue": {
+            "description": "Kleene three-valued logic, with the unknown case split by what resolves it.",
+            "enum": [
+                "TRUE",
+                "FALSE",
+                "UNKNOWN_MISSING_INPUT",
+                "UNKNOWN_NOT_SELF_DETERMINABLE"
+            ],
+            "title": "TruthValue",
+            "type": "string"
+        }
+    },
+    "$id": "https://permitgraph.dev/spec/model/core",
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "additionalProperties": true,
+    "metamodel_version": "1.11.0",
+    "title": "permitgraph-core",
+    "type": "object",
+    "version": null
+}
+

@@ -1,0 +1,14 @@
+{
+  "_placeholder": true,
+  "_note": "No measurement has been taken. A gate reading this file must FAIL rather than pass while _placeholder is true.",
+  "fixture_set_version": null,
+  "metrics": {
+    "false_negatives_on_must_apply": null,
+    "obligation_set_exact_match": null,
+    "indeterminate_rate": null,
+    "mean_questions_to_resolution": null
+  },
+  "gates": {
+    "false_negatives_on_must_apply": { "max": 0, "_note": "Non-negotiable. A missed obligation is the harm." }
+  }
+}

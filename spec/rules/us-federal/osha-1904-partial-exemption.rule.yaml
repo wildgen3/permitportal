@@ -1,0 +1,82 @@
+# OSHA recordkeeping partial exemption.
+#
+# The canonical demonstration of why scope must be declared: this rule uses two
+# independent keys at two different granularities. The industry key is
+# ESTABLISHMENT-level; the size key is COMPANY-level. Conflating them produces wrong
+# determinations in both directions, and is the single most common transcription bug
+# in this domain.
+rule: osha.1904.partial_exemption
+version: 1
+scope: establishment
+result_semantics: exemption
+fixture_only: true          # references a list with is_complete: false
+effective:
+  law_from: "2014-09-18"
+source_url: https://www.ecfr.gov/current/title-29/subtitle-B/chapter-XVII/part-1904
+citations:
+  - id: c1
+    cite: 29 CFR 1904.1(b)(1)
+    source: ecfr
+    as_of: "2026-08-19"
+    note: The size partial exemption counts employees of the entire company.
+  - id: c2
+    cite: 29 CFR 1904.2(b)(1)
+    source: ecfr
+    as_of: "2026-08-19"
+  - id: c3
+    cite: 29 CFR 1904 Subpart B Appendix A
+    source: ecfr
+    as_of: "2026-08-19"
+
+expr:
+  any:
+    # --- SIZE KEY: company scope ------------------------------------------
+    - predicate: attr_lte
+      scope: business
+      attribute: company.peak_employment_prior_cy
+      value: 10
+      cites: [c1]
+
+    # --- INDUSTRY KEY: establishment scope ---------------------------------
+    - all:
+        - predicate: code_in
+          scope: establishment
+          attribute: establishment.classification
+          scheme: NAICS
+          list_ref: lists/osha_1904_app_a
+          list_vintage: "2007"
+          list_semantics: enumerative_closed
+          translation:
+            from_code_of_record: true
+            require_composable: true
+            on_close_match: REVIEW
+          cites: [c3]
+        - predicate: is_false
+          scope: establishment
+          attribute: establishment.osha_bls_state_written_exemption_override
+          cites: [c2]
+
+overlays:
+  - scope: state_plan
+    effect: MAY_NARROW
+    resolution: REQUIRE_JURISDICTION_RULE
+    note: >-
+      The federal appendix is a floor. A state plan may require records from
+      establishments the federal rule exempts. Absent a loaded jurisdiction rule the
+      result is INDETERMINATE, never "exempt".
+
+non_waivable:
+  - obligation: osha.1904.39.severe_injury_reporting
+    cite: 29 CFR 1904.39
+    note: >-
+      Survives BOTH keys. An establishment that is exempt from routine recordkeeping
+      must still report severe injuries, so an "exempt" answer that does not surface
+      this is a harmful answer.
+
+fixtures:
+  positive:
+    - id: small-company-nonlisted-industry
+      note: Exempt by size alone; industry key does not apply.
+  negative:
+    - id: large-company-nonlisted-industry
+      note: Neither key applies. Full recordkeeping.

@@ -1,0 +1,29 @@
+name: Specification change
+description: A specified behaviour is wrong, ambiguous, or inexpressible.
+title: "spec: "
+labels: ["type:spec"]
+body:
+  - type: input
+    id: document
+    attributes:
+      label: Affected document
+      description: e.g. docs/06-rules-dsl.md
+    validations:
+      required: true
+  - type: input
+    id: adr
+    attributes:
+      label: Affected ADR
+      description: The decision this touches, if any. A change that contradicts an accepted ADR needs a superseding ADR, not a spec edit.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+    validations:
+      required: true

@@ -1,0 +1,276 @@
+```mermaid
+erDiagram
+Activity {
+    string id  
+    string description  
+    boolean is_primary  
+    string primacy_basis  
+    string primacy_justification_text  
+    decimal receipts_share  
+}
+AttributeDefinition {
+    string collection_method  
+    DataClass data_class  
+    string datatype  
+    string enum_ref  
+    string label  
+    boolean llm_egress_allowed  
+    ScopeUnit scope_unit  
+    string unit_dimension  
+    string uri  
+}
+Authority {
+    string id  
+    string label  
+}
+BusinessEntity {
+    string id  
+    string affiliation_group_id  
+    decimal company_annual_receipts  
+    integer company_peak_employment_prior_cy  
+    string entity_form  
+    date formation_date  
+    string legal_name  
+}
+ChemicalHolding {
+    string id  
+    string cas_number  
+    string container_type  
+    decimal flashpoint_c  
+    string hazard_category  
+    decimal max_quantity  
+    string source  
+    string uom  
+}
+ClassificationAssignment {
+    string id  
+    stringList alternatives_shown  
+    string code  
+    ConfirmationState confirmation_state  
+    boolean is_code_of_record  
+    AssignmentMethod method  
+    integer rank  
+    decimal score  
+    string subject_ref  
+    ScopeUnit subject_scope  
+}
+CodeTranslation {
+    string id  
+    stringList hop_path  
+    boolean is_composable  
+    MatchTypeList match_type_chain  
+    stringList result_code  
+    boolean review_required  
+}
+Concept {
+    string id  
+    string code  
+    string definition_text  
+    integer level  
+    string parent_code  
+    RevisionStatus revision_status  
+    string title  
+}
+ConceptMapping {
+    string id  
+    decimal apportionment_ratio  
+    string asserted_by  
+    decimal match_strength  
+    MatchType match_type  
+}
+Correspondence {
+    string id  
+    string coverage_notes  
+    string file_provenance  
+    date published_on  
+    string publisher  
+}
+Credential {
+    string id  
+    CredentialType credential_type  
+    decimal estimated_cost  
+    string industry_code_vintage  
+    stringList industry_codes  
+    string label  
+    integer renewal_period_months  
+}
+CredentialDependencyEdge {
+    string id  
+    string edge_kind  
+}
+Determination {
+    string id  
+    date as_of_law  
+    datetime determined_at  
+    string engine_version  
+    string evidence_tree  
+    string input_snapshot_hash  
+    TruthValue result  
+    string rule_version_id  
+    string subject_ref  
+    ScopeUnit subject_scope  
+}
+EquipmentItem {
+    string id  
+    decimal design_capacity  
+    string equipment_type  
+    string uom  
+}
+Establishment {
+    string id  
+    date closed_on  
+    integer employment_at_establishment  
+    integer floor_area_sqft  
+    boolean is_unincorporated  
+    date opened_on  
+    string site_address  
+}
+Fact {
+    string id  
+    decimal confidence  
+    date effective_from  
+    date effective_to  
+    string source  
+    string subject_ref  
+    ScopeUnit subject_scope  
+    string unit  
+    string value_typed  
+}
+Jurisdiction {
+    string id  
+    date effective_from  
+    date effective_to  
+    string geoid  
+    string label  
+    JurisdictionLevel level  
+}
+JurisdictionProfile {
+    string id  
+    boolean global_flag  
+    boolean residency_required  
+}
+LegalSource {
+    string id  
+    date amendment_date  
+    date as_of_date  
+    string citation  
+    datetime retrieved_at  
+    string source_system  
+    string source_url  
+    string text_hash  
+}
+Obligation {
+    string id  
+    string deadline_rule  
+    boolean non_waivable  
+    string obligation_type  
+    string recurrence  
+    ScopeUnit scope_unit  
+    string trigger_rule_id  
+}
+Process {
+    string id  
+    string name  
+    boolean is_covered_process  
+    string process_type  
+}
+ProductOffering {
+    string id  
+    boolean is_regulated_substance  
+    decimal revenue_share  
+}
+ProvenanceRecord {
+    string id  
+    datetime confirmed_at  
+    string confirmed_by  
+    string index_version  
+    string model_id  
+    string prompt_version  
+    integer rank_at_selection  
+    string ui_version  
+}
+Regime {
+    string id  
+    string label  
+    ScopeUnit scope_unit  
+}
+Requirement {
+    string id  
+    string edge_kind  
+    date effective_from  
+    date effective_to  
+    decimal estimated_cost  
+    integer min_age  
+    NodeType node_type  
+    boolean residency_required  
+    string target_predicate  
+    decimal years_experience  
+}
+RollupRule {
+    string id  
+    string authority_citation  
+    RollupMethod method  
+    boolean no_default_from_parent  
+    ScopeUnit source_scope  
+    ScopeUnit target_scope  
+}
+Scheme {
+    string id  
+    boolean is_industry_scheme  
+    string label  
+    string publisher  
+}
+SchemeVersion {
+    string id  
+    date effective_from  
+    date effective_to  
+    string vintage  
+}
+
+Activity ||--|| Establishment : "establishment"
+Authority ||--|o Jurisdiction : "jurisdiction"
+BusinessEntity ||--|o Jurisdiction : "formation_jurisdiction"
+BusinessEntity ||--}o Establishment : "establishments"
+ChemicalHolding ||--|| Process : "process"
+ClassificationAssignment ||--|o ProvenanceRecord : "provenance"
+ClassificationAssignment ||--|| SchemeVersion : "scheme_version"
+CodeTranslation ||--|| ClassificationAssignment : "assignment"
+CodeTranslation ||--|| SchemeVersion : "target_scheme_version"
+Concept ||--|| SchemeVersion : "scheme_version"
+ConceptMapping ||--|o Concept : "source_concept, target_concept"
+ConceptMapping ||--|| Correspondence : "correspondence"
+Correspondence ||--|| SchemeVersion : "source_scheme_version, target_scheme_version"
+Credential ||--|o JurisdictionProfile : "jurisdiction_profile"
+Credential ||--|o LegalSource : "legal_source"
+Credential ||--|| Authority : "issuing_authority"
+CredentialDependencyEdge ||--|o Requirement : "derived_from_requirement"
+CredentialDependencyEdge ||--|| Credential : "from_credential, to_credential"
+Determination ||--|o ClassificationAssignment : "classification_assignment"
+Determination ||--|| Obligation : "obligation"
+Determination ||--}o AttributeDefinition : "missing_attributes"
+EquipmentItem ||--|o Process : "process"
+Establishment ||--|| BusinessEntity : "business_entity"
+Establishment ||--}o Activity : "activities"
+Establishment ||--}o Jurisdiction : "jurisdiction_path"
+Establishment ||--}o Process : "processes"
+Establishment ||--}o ProductOffering : "product_offerings"
+Fact ||--|| AttributeDefinition : "attribute"
+Jurisdiction ||--|o Jurisdiction : "parent"
+JurisdictionProfile ||--}o Jurisdiction : "jurisdiction_exception, main_jurisdiction"
+Obligation ||--|| LegalSource : "legal_source"
+Obligation ||--|| Regime : "regime"
+Process ||--|| Establishment : "establishment"
+Process ||--}o ChemicalHolding : "chemical_holdings"
+Process ||--}o EquipmentItem : "equipment"
+ProductOffering ||--|o Establishment : "establishment"
+Regime ||--|o Authority : "authority"
+Requirement ||--|o Credential : "target_credential"
+Requirement ||--|o JurisdictionProfile : "jurisdiction_profile"
+Requirement ||--|o Requirement : "parent"
+Requirement ||--|| Credential : "credential"
+Requirement ||--|| LegalSource : "legal_source"
+RollupRule ||--|o Regime : "regime"
+SchemeVersion ||--|| Scheme : "scheme"
+
+```
+

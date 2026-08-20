@@ -1,0 +1,25 @@
+{
+  "_placeholder": true,
+  "_note": "No measurement has been taken. Populated by the harness in phase 2. A gate reading this file must FAIL rather than pass while _placeholder is true.",
+  "fixture_set_version": null,
+  "scheme": "NAICS",
+  "vintage": null,
+  "instrument": null,
+  "metrics": {
+    "recall_at_5_6digit": null,
+    "top1_accuracy_6digit": null,
+    "abstention_rate": null,
+    "per_sector": {}
+  },
+  "reference": {
+    "_note": "Published baseline, reported for comparison only. Gating is against our own measurement.",
+    "source": "SRC-10",
+    "code_accuracy": 0.901,
+    "end_to_end_success": 0.755,
+    "caveats": [
+      "denominator excludes the not-listed cohort and back-outs",
+      "end-to-end figure is from a pre-test instrument",
+      "population differs"
+    ]
+  }
+}

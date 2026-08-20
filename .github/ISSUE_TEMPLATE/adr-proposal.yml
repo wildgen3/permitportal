@@ -1,0 +1,34 @@
+name: ADR proposal
+description: A decision needs making, or an existing decision needs revisiting.
+title: "ADR: "
+labels: ["type:adr", "status:needs-decision"]
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Context and problem statement
+      description: What forces are at play? State the problem as a question.
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Options considered
+      description: At least two, each with the reason it might be right. One option is not a decision.
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: input
+    id: driver
+    attributes:
+      label: Decision driver
+      description: The single constraint that most determines the answer.
+    validations:
+      required: true
+  - type: input
+    id: supersedes
+    attributes:
+      label: Supersedes
+      description: ADR number this would supersede, if any. Numbers are never reused.

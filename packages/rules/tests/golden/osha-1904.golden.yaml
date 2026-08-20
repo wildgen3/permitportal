@@ -1,0 +1,53 @@
+# Golden cases for osha.1904.partial_exemption.
+#
+# Synthetic profiles. The first is the case the two-keys-two-scopes bug gets wrong: a
+# small company in a non-listed industry is exempt by SIZE, and a system that applies the
+# size test at establishment scope, or the industry test at company scope, answers
+# differently.
+rule: osha.1904.partial_exemption
+as_of_law: "2026-08-19"
+
+cases:
+  - id: small-company-nonlisted-industry
+    expect: TRUE
+    expect_reason: size_key
+    profile:
+      business:
+        company_peak_employment_prior_cy: 8
+      establishment:
+        classification: { scheme: NAICS, vintage: "2022", code: "238210" }
+        osha_bls_state_written_exemption_override: false
+    also_expect_surfaced:
+      # Survives the exemption. An "exempt" answer that omits this is harmful.
+      - osha.1904.39.severe_injury_reporting
+
+  - id: large-company-nonlisted-industry
+    expect: FALSE
+    profile:
+      business:
+        company_peak_employment_prior_cy: 240
+      establishment:
+        classification: { scheme: NAICS, vintage: "2022", code: "238210" }
+        osha_bls_state_written_exemption_override: false
+
+  - id: large-company-listed-industry
+    expect: TRUE
+    expect_reason: industry_key
+    profile:
+      business:
+        company_peak_employment_prior_cy: 240
+      establishment:
+        classification: { scheme: NAICS, vintage: "2022", code: "541211" }
+        osha_bls_state_written_exemption_override: false
+
+  - id: size-exempt-but-state-plan-override-unknown
+    # The federal appendix is a floor; a state plan may narrow it. With no jurisdiction
+    # rule loaded, the honest answer is INDETERMINATE, not "exempt".
+    expect: UNKNOWN_MISSING_INPUT
+    expect_missing:
+      - establishment.osha_bls_state_written_exemption_override
+    profile:
+      business:
+        company_peak_employment_prior_cy: 240
+      establishment:
+        classification: { scheme: NAICS, vintage: "2022", code: "541211" }

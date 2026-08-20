@@ -1,0 +1,18 @@
+# Single-maintainer repository. Code-owner review is NOT required — see CONTRIBUTING.md.
+# These entries mark the paths that would require a domain reviewer on a team.
+* @wildgen3
+
+# Decisions. On a team, an architect signs these.
+/docs/adr/                @wildgen3
+
+# Rule data. On a team, a regulatory analyst signs these.
+/spec/rules/              @wildgen3
+/spec/lists/              @wildgen3
+/spec/credentials/        @wildgen3
+
+# Baselines. Changing one is claiming quality moved; it needs a reason.
+/eval/baselines/          @wildgen3
+
+# Clean-room controls. Weakening one is a security change.
+/scripts/clean-room-check.py   @wildgen3
+/.github/clean-room-generic.txt @wildgen3

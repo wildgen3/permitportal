@@ -1,0 +1,31 @@
+name: rules
+
+on:
+  pull_request:
+    paths: ['spec/**', 'packages/rules/**', 'scripts/check-rules.py']
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rules-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+
+      - run: python3 -m pip install --disable-pip-version-check pyyaml
+
+      - name: Rule integrity and linter L-01 … L-06
+        # Validates real, machine-checkable domain content: no cycles in the credential
+        # graph, every predicate registered at the declared scope, every entry cited and
+        # effective-dated, and no negation over an illustrative list.
+        run: python3 scripts/check-rules.py

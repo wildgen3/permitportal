@@ -1,0 +1,148 @@
+#!/usr/bin/env node
+/**
+ * Documentation gate.
+ *
+ *   1. Every doc has front-matter with title, status (valid enum), and last_reviewed.
+ *   2. Every `adr:` back-reference resolves to an ADR that exists. A document that
+ *      claims to implement decision 0042 when there is no ADR-0042 is lying about its
+ *      own provenance.
+ *   3. Every relative markdown link resolves to a file that exists. Dead links in a
+ *      specification repository are the fastest credibility leak available.
+ *
+ * No dependencies. Exit 0 clean, 1 on violations.
+ */
+
+import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
+import { join, dirname, resolve, relative } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const REPO = join(dirname(fileURLToPath(import.meta.url)), "..");
+const VALID_STATUS = new Set(["specified", "scaffolded", "implemented"]);
+const SKIP_DIRS = new Set([".git", "node_modules", ".venv", "spec/generated"]);
+// Generated or exemplar files: the index is produced by gen-adr-index.mjs and validated
+// there; the template carries deliberately-invalid placeholder values.
+const SKIP_FILES = new Set(["docs/adr/README.md", "docs/adr/template.md"]);
+
+const errors = [];
+
+function walk(dir, out = []) {
+  for (const entry of readdirSync(dir)) {
+    const full = join(dir, entry);
+    const rel = relative(REPO, full);
+    if (SKIP_DIRS.has(entry) || SKIP_DIRS.has(rel) || entry.startsWith(".")) continue;
+    if (statSync(full).isDirectory()) walk(full, out);
+    else if (entry.endsWith(".md")) out.push(full);
+  }
+  return out;
+}
+
+function frontMatter(text) {
+  const m = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!m) return null;
+  const out = {};
+  for (const line of m[1].split(/\r?\n/)) {
+    const kv = line.match(/^([A-Za-z_][A-Za-z0-9_]*):\s*(.*)$/);
+    if (kv) out[kv[1]] = kv[2].trim().replace(/^["']|["']$/g, "");
+  }
+  return out;
+}
+
+// Which ADR numbers actually exist.
+const adrNumbers = new Set();
+const adrDir = join(REPO, "docs", "adr");
+for (const f of readdirSync(adrDir)) {
+  const m = f.match(/^(\d{4})-.*\.md$/);
+  if (m) adrNumbers.add(m[1]);
+}
+
+const files = walk(REPO);
+
+for (const file of files) {
+  const rel = relative(REPO, file);
+  if (SKIP_FILES.has(rel)) continue;
+  const text = readFileSync(file, "utf8");
+
+  // --- 1 & 2: front-matter, for docs/ only (root-level prose is narrative)
+  if (rel.startsWith("docs/") || /^[a-z]+\/README\.md$/.test(rel)) {
+    const fm = frontMatter(text);
+    if (!fm) {
+      errors.push(`${rel}: no front-matter block`);
+    } else {
+      if (!fm.title) errors.push(`${rel}: front-matter missing 'title'`);
+      if (!fm.status) errors.push(`${rel}: front-matter missing 'status'`);
+      else if (!VALID_STATUS.has(fm.status) && !/^(proposed|accepted|rejected|deprecated|superseded by ADR-\d{4})$/.test(fm.status))
+        errors.push(`${rel}: invalid status '${fm.status}'`);
+      if (!fm.last_reviewed && !fm.date) errors.push(`${rel}: front-matter missing 'last_reviewed'`);
+
+      if (fm.adr) {
+        const nums = [...fm.adr.matchAll(/\d{4}/g)].map((m) => m[0]);
+        for (const n of nums) {
+          if (!adrNumbers.has(n)) errors.push(`${rel}: references ADR-${n}, which does not exist`);
+        }
+      }
+    }
+  }
+
+  // --- 3: relative links resolve
+  const body = text.replace(/^---\r?\n[\s\S]*?\r?\n---/, "");
+  for (const m of body.matchAll(/\[[^\]]*\]\(([^)\s]+)\)/g)) {
+    let target = m[1];
+    if (/^(https?:|mailto:|#)/.test(target)) continue;
+    target = target.split("#")[0];
+    if (!target) continue;
+    const resolved = resolve(dirname(file), target);
+    if (!existsSync(resolved)) {
+      errors.push(`${rel}: dead link -> ${m[1]}`);
+    }
+  }
+}
+
+// --- 4: citation discipline on statistical claims ---------------------------
+// AGENTS.md and README.md both promise that uncited normative claims fail CI. This is
+// that gate. It is deliberately narrow -- "normative claim" is not machine-detectable in
+// general, but the class where overclaiming actually does damage is external statistics:
+// accuracy rates, recall figures, percentages. Every one of those must carry either a
+// [SRC-nn] reference into the source register, or an explicit [internal] marker meaning
+// "this is our own target or gate, not a claim about the world".
+const STAT = /(?<![\w.])(?:\d{1,3}(?:\.\d+)?\s?%|0\.\d{2,3})(?![\w])/;
+const CITED = /\[SRC-\d{2}\]|\[internal\]/;
+
+const registerText = readFileSync(join(REPO, "docs", "03-source-register.md"), "utf8");
+const knownSrc = new Set([...registerText.matchAll(/SRC-(\d{2})/g)].map((m) => m[1]));
+
+for (const file of files) {
+  const rel = relative(REPO, file);
+  if (SKIP_FILES.has(rel)) continue;
+  if (!(rel.startsWith("docs/") || rel === "README.md")) continue;
+  if (rel === "docs/03-source-register.md") continue;
+
+  const text = readFileSync(file, "utf8").replace(/^---\r?\n[\s\S]*?\r?\n---/, "");
+  const lines = text.split(/\r?\n/);
+  let inFence = false;
+
+  lines.forEach((line, i) => {
+    if (/^\s*```/.test(line)) { inFence = !inFence; return; }
+    if (inFence) return;
+    if (!STAT.test(line)) return;
+    if (CITED.test(line)) return;
+    // Allow the citation to sit on an adjacent line of the same paragraph.
+    const neighbours = [lines[i - 1], lines[i + 1], lines[i + 2]].filter(Boolean).join(" ");
+    if (CITED.test(neighbours)) return;
+    errors.push(
+      `${rel}:${i + 1}: statistical claim without [SRC-nn] or [internal] — ` +
+        `"${line.trim().slice(0, 68)}"`
+    );
+  });
+
+  for (const m of text.matchAll(/\[SRC-(\d{2})\]/g)) {
+    if (!knownSrc.has(m[1])) errors.push(`${rel}: cites SRC-${m[1]}, which is not in the source register`);
+  }
+}
+
+if (errors.length) {
+  console.error("docs: FAILED\n");
+  for (const e of errors) console.error(`  - ${e}`);
+  console.error(`\n${errors.length} violation(s).`);
+  process.exit(1);
+}
+console.log(`docs: clean (${files.length} markdown files, ${adrNumbers.size} ADRs, links and ADR references resolve).`);

@@ -1,0 +1,42 @@
+name: clean-room
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    # Weekly, so a term added to the denylist after a merge is still caught.
+    - cron: '17 6 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: clean-room-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  clean-room:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.13'
+
+      - name: Scan
+        # The term list is a repository secret and is never committed: a plaintext
+        # denylist in a public repo discloses exactly what it protects.
+        #
+        # No --local flag here, deliberately. In CI the scanner reports a count only:
+        # this log is world-readable on a public repo, so printing a location would
+        # point at a public line and disclose the term by inspection.
+        #
+        # NEVER convert this workflow to pull_request_target. That would hand the
+        # denylist secret to any forked pull request.
+        #
+        # It exits 2 when no terms are configured, refusing to report a pass without
+        # having checked anything.
+        env:
+          CLEAN_ROOM_DENYLIST: ${{ secrets.CLEAN_ROOM_DENYLIST }}
+        run: python3 scripts/clean-room-check.py
