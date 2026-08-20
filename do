@@ -6,6 +6,7 @@
 # Every dependency here is already present (python3, node, uv-installed linkml).
 #
 #   ./do spec     regenerate spec/generated/ from the LinkML model
+#   ./do test     run the resolver's Go suite
 #   ./do check    run the same gates CI runs
 #   ./do fmt      format what can be formatted
 set -euo pipefail
@@ -124,6 +125,9 @@ cmd_check() {
   echo "== engine purity =="
   python3 scripts/check-engine-purity.py || failed=1
 
+  echo "== resolver =="
+  cmd_test || failed=1
+
   if [[ $failed -ne 0 ]]; then
     echo
     echo "check: FAILED"
@@ -133,15 +137,42 @@ cmd_check() {
   echo "check: all local gates passed"
 }
 
+# Runs the resolver suite and asserts it discovered something. `go test` over a package
+# with no test files exits 0, so a pass proves nothing on its own -- the same
+# fail-closed rule the CI job applies.
+cmd_test() {
+  have go
+  local log rc=0 passes
+  log="$(mktemp)"
+  ( cd services/resolver && go test -count=1 -v ./... ) >"$log" 2>&1 || rc=$?
+  passes="$(grep -c -e '^--- PASS' -e '^    --- PASS' "$log" || true)"
+  if [[ $rc -ne 0 ]]; then
+    grep -e '^--- FAIL' -e '^    --- FAIL' -e '^FAIL' -e '\.go:' "$log" | head -40
+    rm -f "$log"
+    echo "resolver: FAILED"
+    return 1
+  fi
+  rm -f "$log"
+  if [[ "$passes" -lt 25 ]]; then
+    echo "resolver: FAILED — only $passes passing case(s); the suite did not run"
+    return 1
+  fi
+  echo "resolver: clean ($passes passing case(s))"
+}
+
 cmd_fmt() {
   if command -v terraform >/dev/null 2>&1; then
     terraform fmt -recursive infra/ && echo "fmt: terraform formatted"
+  fi
+  if command -v gofmt >/dev/null 2>&1; then
+    gofmt -w services/resolver && echo "fmt: go formatted"
   fi
 }
 
 case "${1:-help}" in
   spec)  cmd_spec ;;
+  test)  cmd_test ;;
   check) cmd_check ;;
   fmt)   cmd_fmt ;;
-  *)     sed -n '3,12p' "$0" | sed 's/^# \{0,1\}//' ;;
+  *)     sed -n '7,11p' "$0" | sed 's/^# \{0,1\}//' ;;
 esac

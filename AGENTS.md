@@ -71,8 +71,10 @@ candidates and explanations. That boundary is architectural, not a matter of car
 
 - `packages/rules/engine` declares **zero dependencies on any model client**, and
   `scripts/check-engine-purity.py` asserts it in CI over both source imports and dependency
-  manifests. If the AI layer ever becomes load-bearing, the build breaks. The evaluator is not
-  written yet, so the gate is currently **armed rather than satisfied** — it says so when it runs.
+  manifests. If the AI layer ever becomes load-bearing, the build breaks. The evaluator now
+  exists, so the gate is **satisfied rather than merely armed**: it reports how many source
+  files and manifests it actually inspected, and refuses to read a clean scan over an empty
+  tree as a pass.
 - A database `CHECK` constraint prevents a `Determination` from referencing a
   `ClassificationAssignment` whose `confirmation_state` is `unconfirmed`. An unconfirmed code cannot
   reach a compliance determination even if application code tries.
@@ -167,7 +169,9 @@ Agents read blog posts; blog posts are wrong. Check npm and PyPI directly.
 
 - LinkML **1.11.x**. `gen-shacl` and `gen-sqlddl` are the load-bearing generators.
 - Go for `services/resolver` — cel-go is the mature partial-evaluation implementation. Python's CEL
-  bindings are not.
+  bindings are not. The module path is **`cel.dev/cel-go`**, not `github.com/google/cel-go`; the
+  repository still lives on GitHub but the module was renamed, and `go get` on the old path fails
+  with a `module declares its path as` error rather than resolving.
 - Python for `services/classifier`, managed with **uv**, not poetry or pipx.
 - **npm**, not pnpm/yarn/bun. **podman**, not docker — images build in Cloud Build, not locally.
 
@@ -217,6 +221,7 @@ Running today:
 | `contracts` | LinkML regenerates byte-identically and the committed artifacts match |
 | `rules` | Every ruleset validates; no cycles in the credential graph; every credential declared; every predicate registered at the declared scope; every entry cited and effective-dated; linter L-01…L-06 |
 | `engine-purity` | Nothing in the decision plane imports or declares a model client |
+| `resolver` | The Go suite: golden cases, the Kleene truth tables, determinism, and the negative controls. Asserts the case count, because `go test` over a package with no tests exits 0 |
 | `clean-room` | Denylist scan over the full tree |
 | `status` | Every directory has a README with a valid status matching the root table |
 
@@ -226,7 +231,6 @@ Arriving with the code they check, and **not running today**:
 | --- | --- |
 | TypeScript typecheck, OpenAPI lint | `packages/` code and `spec/api/openapi.yaml` |
 | `eval` | The harness and a real baseline |
-| Determinism property test | The evaluator |
 | Migration-equals-target assertion | The first migration |
 
 The distinction is deliberate. Listing a gate that does not run as though it does is the
@@ -352,6 +356,34 @@ This section is the point of the file.
   directive for prose that legitimately discusses a marker. **Rule: a check that fires on
   correct content trains its reader to skip it, which is worse than not having the check.
   Tune for zero false positives on a known-good tree before trusting a single finding.**
+
+- **An accepted ADR specified a compilation strategy that cannot be implemented as
+  written.** ADR-0007 and `docs/06-rules-dsl.md` both said the authored tree compiles to
+  CEL, with list polarity carried as `code_in(...) ? true : unknown`. Writing the
+  evaluator showed two reasons it cannot work that way: CEL has no three-valued logic, so
+  there is no `unknown` to return from a ternary; and a tree collapsed into one
+  expression has nowhere to attach the per-node citations, which would make the evidence
+  tree a separate artifact from the decision — the exact thing the same document opens by
+  rejecting. What is implementable is what ADR-0007's own option list actually said:
+  *leaves* compile, unknown propagation is cel-go's, and the Kleene combinators are host
+  code over the tree. Both documents amended, with the amendment recorded rather than
+  the original quietly rewritten. **Rule: a decision record describes a mechanism, and a
+  mechanism nobody has built is a hypothesis. Implementing it is the review. When it
+  disagrees with the record, amend the record and say why — a decision log that only ever
+  agrees with the code has stopped being evidence of anything.**
+
+- **A branch switch silently reverted spec edits, and only the test suite noticed.**
+  Committing the linter fix on a branch, then `git checkout main` to merge it, restored
+  four tracked files to their `main` versions in the working tree — including the rule
+  the engine work was still depending on. Nothing warned; the untracked Go tree was
+  untouched, so the checkout looked clean. The next `./do test` failed one golden case
+  with `list_incomplete`, which is exactly what an engine sees when a rule loses its
+  `fixture_only` declaration. **Rule: after any branch operation, re-run the suite before
+  trusting the tree. A working tree is not a snapshot of what you last wrote — it is the
+  intersection of what you wrote and what the current ref says, and the difference is
+  invisible for anything already committed elsewhere.** Also the strongest evidence so
+  far that the golden cases are load-bearing rather than decorative: a silent data
+  reversion surfaced in under a second as a wrong determination.
 
 - **The rules linter's three most important checks covered two of the four predicates
   that consult a list.** `L-01` (no negation over an open list), `L-03` (pin the list and

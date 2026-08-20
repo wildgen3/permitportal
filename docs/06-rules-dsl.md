@@ -179,13 +179,30 @@ have to encode revision history.
 
 ## Compilation
 
-Authored YAML compiles to CEL and evaluates on cel-go with `PartialActivation`
-(ADR-0007). Unknown attributes enter the unknown set rather than defaulting, which is
-what preserves the semantics above through compilation. The compiler emits
-`code_in(...) ? true : unknown` for open lists, so list polarity survives too.
+**Leaves** compile to CEL and evaluate on cel-go with `PartialActivation` (ADR-0007).
+An attribute absent from the fact set is registered as an unknown attribute pattern
+rather than bound to a zero value, so cel-go returns an unknown and the leaf becomes
+UNKNOWN instead of FALSE. That is what carries the semantics above through compilation.
+
+The Kleene combinators stay in the host language rather than compiling into the same
+expression, for two reasons that only became concrete once the evaluator was written:
+CEL has no three-valued logic of its own, and a rule collapsed into a single expression
+has nowhere to hang a per-node citation — which would mean the evidence tree was a
+separate artifact from the decision, the thing this document opens by rejecting.
+
+List polarity survives compilation the same way. A membership predicate returns a
+tri-state — hit, miss, or *not comparable* — and the polarity of the list decides what a
+miss means: FALSE from a closed and complete list, UNKNOWN from an illustrative one,
+UNKNOWN from a closed list this repository carries only a subset of. "Not on the list"
+and "could not be compared to the list" are different facts, and only the first of them
+is ever allowed to become FALSE.
 
 Rego was rejected specifically because negation-as-failure — `not p` succeeding on
-absent data — is the exact bug this design exists to prevent.
+absent data — is the exact bug this design exists to prevent. The golden case
+`exemption-claims-not-asked` pins that down: under negation-as-failure the `not:` node
+above would succeed on an unanswered question and produce a confident obligation.
+
+Implemented in `services/resolver/` (`internal/kleene`, `internal/engine`).
 
 ## Provenance
 

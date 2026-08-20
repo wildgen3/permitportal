@@ -1,0 +1,9 @@
+# Demo input for cmd/resolve. Synthetic and hand-authored: a fact set, not eval data.
+#
+# Labelled evaluation sets live in eval/ and are produced by a seeded generator. This
+# file exists so a reviewer can run the CLI in one command, and it is deliberately not
+# in eval/fixtures/ so that nothing here is counted as an eval fixture.
+establishment:
+  activities: [electrical_installation, general_remodel]
+  jurisdiction_path: [us, us-wa, us-wa-king, us-wa-seattle]
+  exemption_claims: []

@@ -43,6 +43,10 @@ stored rather than regenerated.
   `engine_version`, `as_of_law` and `input_snapshot_hash` required on `Determination`,
   and by `scripts/check-engine-purity.py`, which keeps sampled model output out of the
   decision plane (ADR-0001).
-- **Will be enforced by** a property test asserting that identical inputs, rule version
-  and `as_of_law` produce a **byte-identical** evidence tree. That test needs an
-  evaluator, which does not exist yet.
+- Enforced today by a property test asserting that identical inputs, rule version and
+  `as_of_law` produce a **byte-identical** determination — both within one process and
+  across independently loaded corpora, because replay happens in a different process
+  than the original determination. A companion test asserts the converse, that the
+  snapshot hash *changes* when a fact changes; without it the first test is satisfied by
+  an implementation that hashes nothing.
+  (`services/resolver/engine_test.go`, run by the `resolver` gate.)

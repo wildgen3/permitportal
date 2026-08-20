@@ -51,8 +51,8 @@ fails if this table disagrees with them.
 | --- | --- | --- |
 | [`docs/`](docs/) | `specified` | Problem, domain model, DSL, AI layer, eval methodology, ADRs |
 | [`spec/`](spec/) | `specified` | LinkML model, rules, code lists, OpenAPI — the source of truth |
-| [`packages/`](packages/) | `scaffolded` | Rules evaluator interface and golden correctness tests |
-| [`services/`](services/) | `scaffolded` | Classifier (Python) and resolver (Go) |
+| [`packages/`](packages/) | `scaffolded` | Evaluator contract and the golden correctness cases the resolver runs |
+| [`services/`](services/) | `scaffolded` | Resolver (Go) implemented and under test; classifier (Python) not started |
 | [`apps/`](apps/) | `scaffolded` | Reference UI |
 | [`eval/`](eval/) | `scaffolded` | Harness, synthetic fixtures, committed baselines |
 | [`data/`](data/) | `scaffolded` | Public reference data with provenance |

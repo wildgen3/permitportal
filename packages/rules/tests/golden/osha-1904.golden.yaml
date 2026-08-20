@@ -51,3 +51,30 @@ cases:
         company_peak_employment_prior_cy: 240
       establishment:
         classification: { scheme: NAICS, vintage: "2022", code: "541211" }
+
+  - id: size-exempt-but-jurisdiction-rule-not-loaded
+    # The overlay applies to the DETERMINATION, not only to the branch that happens to
+    # mention the override. Exempt-by-size with the state-plan fact absent is
+    # INDETERMINATE, because a state plan may require records from establishments the
+    # federal rule exempts. Answering "exempt" here would be the harmful direction of
+    # the error, and it is the answer a system gets by evaluating the tree and stopping.
+    expect: UNKNOWN_NOT_SELF_DETERMINABLE
+    expect_missing: []
+    profile:
+      business:
+        company_peak_employment_prior_cy: 8
+      establishment:
+        classification: { scheme: NAICS, vintage: "2022", code: "238210" }
+
+  - id: production-mode-refuses-a-fixture-rule
+    # This rule reads a list reproduced here as a representative subset, so it declares
+    # fixture_only. The engine must refuse to produce a real determination from it
+    # rather than quietly answering as though the subset were the appendix.
+    mode: production
+    expect_error: "declares fixture_only: true and cannot be evaluated in production mode"
+    profile:
+      business:
+        company_peak_employment_prior_cy: 8
+      establishment:
+        classification: { scheme: NAICS, vintage: "2022", code: "238210" }
+        osha_bls_state_written_exemption_override: false
