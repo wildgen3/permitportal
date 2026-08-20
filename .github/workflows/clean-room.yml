@@ -24,7 +24,25 @@ jobs:
         with:
           python-version: '3.13'
 
+      # Dependabot runs use a SEPARATE secret store, which is deliberately left empty.
+      # The scanner therefore exits 2 ("no sensitive terms configured") on every
+      # Dependabot pull request -- correct fail-closed behaviour, but a permanent red X.
+      #
+      # The fix is NOT to put the denylist in the Dependabot secret store. That store is
+      # readable by runs triggered by Dependabot's own updates to SHA-pinned actions,
+      # which is a supply-chain path this particular secret should not be on: it is the
+      # one secret whose disclosure defeats the control it protects.
+      #
+      # Instead the scan is skipped for Dependabot only. The residual risk is negligible
+      # and bounded: Dependabot edits version strings and commit SHAs in
+      # .github/workflows and nothing else, and every one of those changes is still
+      # scanned by the push-to-main run after merge.
+      - name: Scan (skipped for Dependabot — see comment above)
+        if: github.actor == 'dependabot[bot]'
+        run: echo "Skipped: Dependabot has no access to the denylist secret by design."
+
       - name: Scan
+        if: github.actor != 'dependabot[bot]'
         # The term list is a repository secret and is never committed: a plaintext
         # denylist in a public repo discloses exactly what it protects.
         #
