@@ -22,7 +22,21 @@ have() { command -v "$1" >/dev/null 2>&1 || die "$1 not found on PATH. See AGENT
 
 # LinkML's TypeScript generator emits one WARNING per decimal/datetime slot -- a known
 # limitation recorded in ADR-0010, not an error. Filter those and keep everything else.
-quiet() { "$@" 2> >(grep -v "^WARNING:linkml" >&2); }
+#
+# Deliberately NOT `2> >(grep ...)`. Process substitution runs the filter
+# asynchronously: when it exits first the generator takes an EPIPE on stderr and dies
+# mid-write, leaving a TRUNCATED stdout file. That made the contracts drift gate flap --
+# it emptied core.shacl.ttl on roughly two runs in three and blocked a publish for a
+# reason that did not exist. Buffer stderr to a file and filter after the command has
+# fully exited; the exit status is then the generator's own, not the filter's.
+quiet() {
+  local err rc=0
+  err="$(mktemp)"
+  "$@" 2>"$err" || rc=$?
+  grep -v "^WARNING:linkml" "$err" >&2 || true
+  rm -f "$err"
+  return $rc
+}
 
 # Normalisation needs rdflib, which ships with LinkML. In CI that is the same interpreter
 # that runs the generators; locally LinkML lives in its own uv tool venv.
