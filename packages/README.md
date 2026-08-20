@@ -8,7 +8,7 @@ last_reviewed: 2026-08-19
 
 | Path | Contents | Status |
 | --- | --- | --- |
-| `rules/engine/` | The evaluator. Interface and semantics defined; implementation lands with the vertical slice. | `scaffolded` |
+| `rules/engine/` | The evaluator's contract. The implementation is `services/resolver/`; see that README for why. | `scaffolded` |
 | `rules/tests/golden/` | Profile → expected obligation set. The correctness specification. | `scaffolded` |
 
 ## The constraint that matters here

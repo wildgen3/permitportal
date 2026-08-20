@@ -49,6 +49,14 @@ scratch — unpaid risk, when the semantics are the novel part and the evaluator
   across two languages.
 - Enforced today by: linter L-01 and L-03 in `scripts/check-rules.py`, which reject
   negation over an open list and any code predicate without a pinned, resolving list.
-- **Will be enforced by** the compiler, which must emit `code_in(...) ? true : unknown`
-  for open lists so that list polarity (ADR-0008) survives compilation. No compiler
-  exists yet.
+- Enforced today by the evaluator in `services/resolver/internal/engine`, which applies
+  list polarity to every membership predicate uniformly, and by
+  `TestOpenListNeverProducesFalse`, which flips a list to `illustrative_open` at runtime
+  and asserts that a miss cannot produce FALSE.
+- Amended by experience: only the **leaves** compile. The original wording implied the
+  whole tree became one CEL expression, with polarity expressed as a ternary. It cannot:
+  CEL has no three-valued logic, and a collapsed expression has nowhere to attach the
+  per-node citations that make the evidence tree the explanation rather than a rendering
+  of it. The combinators are Kleene operators in Go over per-leaf CEL results, and the
+  unknown propagation the decision was made for is still cel-go's. See
+  `docs/06-rules-dsl.md`.

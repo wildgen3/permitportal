@@ -31,14 +31,16 @@ citations:
 expr:
   any:
     # --- SIZE KEY: company scope ------------------------------------------
-    - predicate: attr_lte
+    - label: size_key
+      predicate: attr_lte
       scope: business
       attribute: company.peak_employment_prior_cy
       value: 10
       cites: [c1]
 
     # --- INDUSTRY KEY: establishment scope ---------------------------------
-    - all:
+    - label: industry_key
+      all:
         - predicate: code_in
           scope: establishment
           attribute: establishment.classification

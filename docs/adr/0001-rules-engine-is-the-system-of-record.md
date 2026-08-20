@@ -50,8 +50,10 @@ unreproducible determination cannot be appealed.
 - Enforced by: `scripts/check-engine-purity.py`, which fails the build if anything in
   `packages/rules` or `services/resolver` imports or declares a dependency on a model
   client. If the AI layer ever becomes load-bearing, the build breaks. The evaluator is
-  not written yet, so the gate is armed rather than satisfied, and it reports that
-  distinction rather than printing a bare pass. A database `CHECK` additionally prevents
-  an unconfirmed classification from reaching a determination.
+  now written, so the gate inspects real source files and a real `go.mod` rather than an
+  empty tree; it prints the count either way, because a clean scan over nothing is
+  indistinguishable from a clean scan over something unless the count is shown. A
+  database `CHECK` additionally prevents an unconfirmed classification from reaching a
+  determination.
 
 See ADR-0005, ADR-0009, and `docs/11-ai-layer.md`.

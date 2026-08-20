@@ -1,0 +1,68 @@
+name: resolver
+
+on:
+  pull_request:
+    # NO path filter, deliberately -- this is a REQUIRED status check. See rules.yml.
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: resolver-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  resolver:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: services/resolver/go.mod
+          cache-dependency-path: services/resolver/go.sum
+
+      - name: Formatting
+        working-directory: services/resolver
+        run: |
+          unformatted="$(gofmt -l .)"
+          if [ -n "$unformatted" ]; then
+            echo "gofmt would rewrite:"; echo "$unformatted"; exit 1
+          fi
+
+      - name: Vet
+        working-directory: services/resolver
+        run: go vet ./...
+
+      - name: Dependency manifest is tidy
+        # go.mod drifting from the imports is how an undeclared dependency arrives,
+        # and the decision-plane purity gate reads go.mod. A stale manifest would let
+        # that gate pass over a dependency the build actually has.
+        working-directory: services/resolver
+        run: |
+          cp go.mod go.mod.orig && cp go.sum go.sum.orig
+          go mod tidy
+          diff -u go.mod.orig go.mod && diff -u go.sum.orig go.sum
+          rm -f go.mod.orig go.sum.orig
+
+      - name: Golden cases, property tests and negative controls
+        # Includes the determinism property test: the same rule version, law date and
+        # fact set must produce a byte-identical determination, within a process and
+        # across independently loaded corpora.
+        #
+        # The case count is asserted because a test binary that discovers nothing exits
+        # 0. "No tests ran" and "everything passed" are indistinguishable unless
+        # something counts, so this counts.
+        working-directory: services/resolver
+        run: |
+          set -o pipefail
+          go test -count=1 -v ./... 2>&1 | tee test.log
+          passes=$(grep -c -e '^--- PASS' -e '^    --- PASS' test.log || true)
+          echo "passing cases: $passes"
+          rm -f test.log
+          if [ "$passes" -lt 25 ]; then
+            echo "Expected at least 25 passing cases; got $passes." >&2
+            echo "Either cases were removed or discovery silently found nothing." >&2
+            exit 1
+          fi

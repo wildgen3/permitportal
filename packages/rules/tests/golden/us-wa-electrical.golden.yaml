@@ -1,0 +1,57 @@
+# Golden cases for us-wa.electrical_contractor.required.
+#
+# This rule is the seam between the two halves of the system: it decides THAT a
+# credential is required, and the requirement tree in spec/credentials/ decides what
+# must be obtained first. It is also the negation example — `not:` over a closed list —
+# so the last two cases pin down what that construct does when the fact is absent.
+rule: us-wa.electrical_contractor.required
+as_of_law: "2026-08-19"
+
+cases:
+  - id: seattle-electrical-contractor
+    expect: TRUE
+    also_expect_surfaced: []
+    profile:
+      establishment:
+        activities: [electrical_installation, general_remodel]
+        jurisdiction_path: [us, us-wa, us-wa-king, us-wa-seattle]
+        exemption_claims: []
+
+  - id: seattle-remodel-only
+    # Not electrical work. The activity vocabulary is closed AND complete, so a miss
+    # here really is a FALSE — unlike the OSHA appendix subset next door.
+    expect: FALSE
+    profile:
+      establishment:
+        activities: [general_remodel]
+        jurisdiction_path: [us, us-wa, us-wa-king, us-wa-seattle]
+        exemption_claims: []
+
+  - id: electrical-work-outside-the-jurisdiction
+    expect: FALSE
+    profile:
+      establishment:
+        activities: [electrical_installation]
+        jurisdiction_path: [us, us-or, us-or-portland]
+        exemption_claims: []
+
+  - id: employee-of-a-registered-contractor-is-exempt
+    expect: FALSE
+    profile:
+      establishment:
+        activities: [electrical_installation]
+        jurisdiction_path: [us, us-wa, us-wa-seattle]
+        exemption_claims: [employee_of_registered_contractor]
+
+  - id: exemption-claims-not-asked
+    # The whole point of the `not:` node. With the fact absent, Rego's
+    # negation-as-failure would make `not exempt` succeed and answer "licence required"
+    # — right answer, wrong reasoning, and wrong in the other direction the moment the
+    # applicant is exempt. Here it stays INDETERMINATE and produces the next question.
+    expect: UNKNOWN_MISSING_INPUT
+    expect_missing:
+      - establishment.exemption_claims
+    profile:
+      establishment:
+        activities: [electrical_installation]
+        jurisdiction_path: [us, us-wa, us-wa-seattle]
