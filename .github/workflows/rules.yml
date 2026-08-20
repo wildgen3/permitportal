@@ -2,7 +2,10 @@ name: rules
 
 on:
   pull_request:
-    paths: ['spec/**', 'packages/**', 'services/resolver/**', 'scripts/check-rules.py', 'scripts/check-engine-purity.py']
+    # NO path filter, deliberately. This is a REQUIRED status check, and a
+    # path-filtered workflow never reports on a pull request that does not touch its
+    # paths -- so the check sits "expected" forever and the pull request can never
+    # merge. A required check must be able to run on every pull request.
   push:
     branches: [main]
 
