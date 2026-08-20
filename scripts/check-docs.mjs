@@ -205,6 +205,28 @@ if (existsSync(wfDir)) {
   }
 }
 
+// --- 8: every action must be SHA-pinned ------------------------------------
+// A version tag is mutable: whoever controls the tag controls what runs with this
+// repository's secrets. AGENTS.md states the pinning rule; this enforces it. Caught a
+// real one -- hashicorp/setup-terraform@v3 sat unpinned among five pinned actions.
+if (existsSync(wfDir)) {
+  for (const f of readdirSync(wfDir).filter((n) => /\.ya?ml$/.test(n))) {
+    const text = readFileSync(join(wfDir, f), "utf8");
+    text.split(/\r?\n/).forEach((line, i) => {
+      const m = line.match(/^\s*-?\s*uses:\s*([^\s#]+)/);
+      if (!m) return;
+      const ref = m[1];
+      if (ref.startsWith("./") || ref.startsWith("docker://")) return;
+      if (!/@[a-f0-9]{40}$/.test(ref)) {
+        errors.push(
+          `.github/workflows/${f}:${i + 1}: '${ref}' is not SHA-pinned. A tag is mutable; ` +
+            `whoever controls it controls what runs with this repository's secrets.`
+        );
+      }
+    });
+  }
+}
+
 if (errors.length) {
   console.error("docs: FAILED\n");
   for (const e of errors) console.error(`  - ${e}`);
