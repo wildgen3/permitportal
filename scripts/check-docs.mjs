@@ -180,6 +180,31 @@ for (const file of files) {
   }
 }
 
+// --- 7: workflow YAML must parse -------------------------------------------
+// A broken workflow file is invisible to every other gate here and only surfaces as a
+// failed run AFTER the push. This caught a real one: `run: echo "Skipped: ..."` -- a
+// colon-space inside an unquoted scalar, which YAML reads as a nested mapping.
+const wfDir = join(REPO, ".github", "workflows");
+if (existsSync(wfDir)) {
+  for (const f of readdirSync(wfDir).filter((n) => /\.ya?ml$/.test(n))) {
+    const text = readFileSync(join(wfDir, f), "utf8");
+    // Dependency-free structural check: every `key: value` line whose value is
+    // unquoted must not contain a further ": " outside quotes.
+    text.split(/\r?\n/).forEach((line, i) => {
+      const m = line.match(/^(\s*)(-?\s*[A-Za-z_][\w-]*):\s+(.*)$/);
+      if (!m) return;
+      let value = m[3];
+      if (/^['"]/.test(value) || value.startsWith("|") || value.startsWith(">")) return;
+      if (/:\s/.test(value)) {
+        errors.push(
+          `.github/workflows/${f}:${i + 1}: unquoted value contains ": " — YAML will read ` +
+            `this as a nested mapping. Quote it. (${value.slice(0, 50)})`
+        );
+      }
+    });
+  }
+}
+
 if (errors.length) {
   console.error("docs: FAILED\n");
   for (const e of errors) console.error(`  - ${e}`);
