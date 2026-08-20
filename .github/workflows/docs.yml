@@ -29,6 +29,14 @@ jobs:
       - name: ADR index is in sync
         run: node scripts/gen-adr-index.mjs --check
 
+      # `terraform` is not on the GitHub runner image by default -- without this
+      # the step fails with exit 127 "command not found", which reads like a
+      # formatting failure but is a missing tool.
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.15.9
+          terraform_wrapper: false
+
       - name: Terraform formatting
         # Runs from day one, before any resource exists, so drift never accumulates.
         run: terraform fmt -check -recursive infra/

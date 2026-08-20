@@ -23,7 +23,9 @@ jobs:
           python-version: '3.13'
 
       - name: Install LinkML
-        run: python3 -m pip install --disable-pip-version-check 'linkml==1.11.*'
+        # Pinned exactly, not '1.11.*'. A floating patch can change generator
+        # output ordering, which surfaces as phantom spec drift in CI only.
+        run: python3 -m pip install --disable-pip-version-check 'linkml==1.11.1'
 
       - name: Regenerate and assert no drift
         # Generated artifacts are committed so they render on the repository host, and

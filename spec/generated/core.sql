@@ -390,8 +390,8 @@ CREATE TABLE "JurisdictionProfile_main_jurisdiction" (
 	FOREIGN KEY("JurisdictionProfile_id") REFERENCES "JurisdictionProfile" (id),
 	FOREIGN KEY(main_jurisdiction_id) REFERENCES "Jurisdiction" (id)
 );
-CREATE INDEX "ix_JurisdictionProfile_main_jurisdiction_main_jurisdiction_id" ON "JurisdictionProfile_main_jurisdiction" (main_jurisdiction_id);
 CREATE INDEX "ix_JurisdictionProfile_main_jurisdiction_JurisdictionProfile_id" ON "JurisdictionProfile_main_jurisdiction" ("JurisdictionProfile_id");
+CREATE INDEX "ix_JurisdictionProfile_main_jurisdiction_main_jurisdiction_id" ON "JurisdictionProfile_main_jurisdiction" (main_jurisdiction_id);
 
 CREATE TABLE "JurisdictionProfile_jurisdiction_exception" (
 	"JurisdictionProfile_id" TEXT,
@@ -432,8 +432,8 @@ CREATE TABLE "Concept" (
 	UNIQUE (scheme_version, code),
 	FOREIGN KEY(scheme_version) REFERENCES "SchemeVersion" (id)
 );
-CREATE INDEX "ix_Concept_id" ON "Concept" (id);
 CREATE INDEX "Concept_scheme_version_code_idx" ON "Concept" (scheme_version, code);
+CREATE INDEX "ix_Concept_id" ON "Concept" (id);
 
 CREATE TABLE "Correspondence" (
 	id TEXT NOT NULL,
@@ -623,8 +623,8 @@ CREATE TABLE "Establishment_jurisdiction_path" (
 	FOREIGN KEY("Establishment_id") REFERENCES "Establishment" (id),
 	FOREIGN KEY(jurisdiction_path_id) REFERENCES "Jurisdiction" (id)
 );
-CREATE INDEX "ix_Establishment_jurisdiction_path_jurisdiction_path_id" ON "Establishment_jurisdiction_path" (jurisdiction_path_id);
 CREATE INDEX "ix_Establishment_jurisdiction_path_Establishment_id" ON "Establishment_jurisdiction_path" ("Establishment_id");
+CREATE INDEX "ix_Establishment_jurisdiction_path_jurisdiction_path_id" ON "Establishment_jurisdiction_path" (jurisdiction_path_id);
 
 CREATE TABLE "ClassificationAssignment_alternatives_shown" (
 	"ClassificationAssignment_id" TEXT,
@@ -641,8 +641,8 @@ CREATE TABLE "Credential_industry_codes" (
 	PRIMARY KEY ("Credential_id", industry_codes),
 	FOREIGN KEY("Credential_id") REFERENCES "Credential" (id)
 );
-CREATE INDEX "ix_Credential_industry_codes_industry_codes" ON "Credential_industry_codes" (industry_codes);
 CREATE INDEX "ix_Credential_industry_codes_Credential_id" ON "Credential_industry_codes" ("Credential_id");
+CREATE INDEX "ix_Credential_industry_codes_industry_codes" ON "Credential_industry_codes" (industry_codes);
 
 CREATE TABLE "ChemicalHolding" (
 	id TEXT NOT NULL,
@@ -712,8 +712,8 @@ CREATE TABLE "CodeTranslation_result_code" (
 	PRIMARY KEY ("CodeTranslation_id", result_code),
 	FOREIGN KEY("CodeTranslation_id") REFERENCES "CodeTranslation" (id)
 );
-CREATE INDEX "ix_CodeTranslation_result_code_result_code" ON "CodeTranslation_result_code" (result_code);
 CREATE INDEX "ix_CodeTranslation_result_code_CodeTranslation_id" ON "CodeTranslation_result_code" ("CodeTranslation_id");
+CREATE INDEX "ix_CodeTranslation_result_code_result_code" ON "CodeTranslation_result_code" (result_code);
 
 CREATE TABLE "CodeTranslation_hop_path" (
 	"CodeTranslation_id" TEXT,
@@ -721,8 +721,8 @@ CREATE TABLE "CodeTranslation_hop_path" (
 	PRIMARY KEY ("CodeTranslation_id", hop_path),
 	FOREIGN KEY("CodeTranslation_id") REFERENCES "CodeTranslation" (id)
 );
-CREATE INDEX "ix_CodeTranslation_hop_path_hop_path" ON "CodeTranslation_hop_path" (hop_path);
 CREATE INDEX "ix_CodeTranslation_hop_path_CodeTranslation_id" ON "CodeTranslation_hop_path" ("CodeTranslation_id");
+CREATE INDEX "ix_CodeTranslation_hop_path_hop_path" ON "CodeTranslation_hop_path" (hop_path);
 
 CREATE TABLE "CodeTranslation_match_type_chain" (
 	"CodeTranslation_id" TEXT,
@@ -730,8 +730,8 @@ CREATE TABLE "CodeTranslation_match_type_chain" (
 	PRIMARY KEY ("CodeTranslation_id", match_type_chain),
 	FOREIGN KEY("CodeTranslation_id") REFERENCES "CodeTranslation" (id)
 );
-CREATE INDEX "ix_CodeTranslation_match_type_chain_match_type_chain" ON "CodeTranslation_match_type_chain" (match_type_chain);
 CREATE INDEX "ix_CodeTranslation_match_type_chain_CodeTranslation_id" ON "CodeTranslation_match_type_chain" ("CodeTranslation_id");
+CREATE INDEX "ix_CodeTranslation_match_type_chain_match_type_chain" ON "CodeTranslation_match_type_chain" (match_type_chain);
 
 CREATE TABLE "Determination_missing_attributes" (
 	"Determination_id" TEXT,
@@ -740,6 +740,6 @@ CREATE TABLE "Determination_missing_attributes" (
 	FOREIGN KEY("Determination_id") REFERENCES "Determination" (id),
 	FOREIGN KEY(missing_attributes_uri) REFERENCES "AttributeDefinition" (uri)
 );
-CREATE INDEX "ix_Determination_missing_attributes_missing_attributes_uri" ON "Determination_missing_attributes" (missing_attributes_uri);
 CREATE INDEX "ix_Determination_missing_attributes_Determination_id" ON "Determination_missing_attributes" ("Determination_id");
+CREATE INDEX "ix_Determination_missing_attributes_missing_attributes_uri" ON "Determination_missing_attributes" (missing_attributes_uri);
 

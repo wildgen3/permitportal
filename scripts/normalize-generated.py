@@ -8,10 +8,17 @@ a gate people learn to ignore.
   core.context.jsonld   embeds a wall-clock `generation_date`
   core.shacl.ttl        emits blank-node property shapes in an order that varies between
                         processes (PYTHONHASHSEED=0 does NOT fix it -- verified)
+  core.sql              emits contiguous CREATE INDEX runs in an order that varies
+                        between environments. Stable within one machine, which is why
+                        it passed locally and failed in CI -- the worst shape for a
+                        drift gate, since it only reproduces where you cannot debug it.
 
-The fix for the timestamp is to pin it. The fix for the ordering is to parse the graph
-and re-serialise it canonically: rdflib's `to_canonical_graph` relabels blank nodes
-deterministically, so two independent generations normalise to identical bytes.
+The fix for the timestamp is to pin it. The fix for the RDF ordering is to parse the
+graph and re-serialise it canonically: rdflib's `to_canonical_graph` relabels blank
+nodes deterministically, so two independent generations normalise to identical bytes.
+The fix for the SQL is to sort each contiguous CREATE INDEX run -- index creation order
+carries no meaning to the database, so sorting is semantically inert and makes the byte
+output independent of whatever order the generator happened to walk its model in.
 
 Requires rdflib, which ships with LinkML. Exits 2 rather than silently skipping if it is
 absent -- a normaliser that quietly does nothing produces exactly the flapping gate it
@@ -67,6 +74,37 @@ def normalize_turtle(path: Path) -> bool:
     return True
 
 
+def normalize_sql(path: Path) -> bool:
+    """Sort contiguous runs of CREATE INDEX statements.
+
+    Only adjacent runs are sorted, never the whole file: table and index definitions
+    are order-dependent relative to each other (an index references its table), while
+    indexes within a run are not.
+    """
+    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+    out: list[str] = []
+    run: list[str] = []
+
+    def flush() -> None:
+        if run:
+            out.extend(sorted(run))
+            run.clear()
+
+    for line in lines:
+        if line.startswith("CREATE INDEX "):
+            run.append(line)
+        else:
+            flush()
+            out.append(line)
+    flush()
+
+    normalized = "".join(out)
+    if path.read_text(encoding="utf-8") == normalized:
+        return False
+    path.write_text(normalized, encoding="utf-8")
+    return True
+
+
 def main() -> int:
     changed = []
     jsonld = GEN / "core.context.jsonld"
@@ -76,6 +114,10 @@ def main() -> int:
     shacl = GEN / "core.shacl.ttl"
     if shacl.is_file() and normalize_turtle(shacl):
         changed.append(shacl.name)
+
+    sql = GEN / "core.sql"
+    if sql.is_file() and normalize_sql(sql):
+        changed.append(sql.name)
 
     print(f"normalize: {len(changed)} artifact(s) normalised" + (f" ({', '.join(changed)})" if changed else ""))
     return 0
