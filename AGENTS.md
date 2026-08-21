@@ -403,6 +403,19 @@ This section is the point of the file.
   uniformly to every list-consuming predicate, so it disagreed with the linter, and the
   disagreement was the bug.
 
+- **A required status check was path-filtered, so any pull request that did not touch its
+  paths could never merge.** `docs` is one of six required checks in the branch ruleset,
+  but `docs.yml` carried `paths: ['**/*.md', 'docs/**', ...]` on `pull_request`. GitHub does
+  not report a skipped-by-path workflow at all -- the check sits at "expected" forever, and
+  with `strict_required_status_checks_policy` and no bypass actors the pull request
+  deadlocks with five green checks and one that will never arrive. Found on a one-file
+  deletion that touched no markdown. `rules.yml` and `contracts.yml` already carried the
+  correct comment explaining this exact trap; `docs.yml` was simply missed when they were
+  fixed. **Rule: every required check must run unconditionally on `pull_request`. When a
+  fix is applied to a class of file, enumerate the whole class and verify each member --
+  the two that were fixed proved the author understood the bug, which is precisely why the
+  third one survived unexamined.**
+
 - **YAML parsed `TRUE:` and `FALSE:` as booleans.** The `TruthValue` enum declared permissible values
   `TRUE`, `FALSE`, `UNKNOWN_MISSING_INPUT`, `UNKNOWN_NOT_SELF_DETERMINABLE`. YAML 1.1 coerces the
   first two to booleans, so they silently became `True` and `False` in *every* generated artifact —
