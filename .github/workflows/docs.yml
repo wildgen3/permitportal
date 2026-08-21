@@ -2,7 +2,10 @@ name: docs
 
 on:
   pull_request:
-    paths: ['**/*.md', 'docs/**', 'scripts/check-docs.mjs', 'scripts/gen-adr-index.mjs']
+    # NO path filter, deliberately. This is a REQUIRED status check, and a
+    # path-filtered workflow never reports on a pull request that does not touch its
+    # paths -- so the check sits "expected" forever and the pull request can never
+    # merge. A required check must be able to run on every pull request.
   push:
     branches: [main]
 
